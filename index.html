@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>html{color-scheme:light}body{margin:0}</style>
+<title>語句道場</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: 原稿用紙のマス目と赤ペンの丸つけ。白い答案紙の上で、1問ずつ4択に答える。 */
+:root{
+  --paper:#f4f7f6;      /* 少し青みのある紙 */
+  --card:#ffffff;
+  --ink:#1b2630;
+  --ink2:#566670;
+  --grid:#a9c8bf;       /* 原稿用紙の罫線 */
+  --line:#d3dfdb;
+  --soft:#e6f0ed;
+  --accent:#1d7565;
+  --accent-ink:#ffffff;
+  --pen:#d03a2e;        /* 赤ペン */
+  --pen-soft:#fbe9e6;
+  --f-disp:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-ui:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  --cs:clamp(40px,9.5vw,60px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#11181b;--card:#192226;--ink:#e8efec;--ink2:#9db0aa;--grid:#33564e;--line:#2a3b3b;
+    --soft:#1f2e2f;--accent:#4cc3a8;--accent-ink:#082019;--pen:#ff7366;--pen-soft:#33201f;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11181b;--card:#192226;--ink:#e8efec;--ink2:#9db0aa;--grid:#33564e;--line:#2a3b3b;
+  --soft:#1f2e2f;--accent:#4cc3a8;--accent-ink:#082019;--pen:#ff7366;--pen-soft:#33201f;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:16px 48px;
+}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#app{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+small{font-size:12px;color:var(--ink2);letter-spacing:.04em}
+h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.08em;color:var(--ink2)}
+
+/* マス目 */
+.cells{display:flex;flex-wrap:wrap;padding:1px 0 0 1px}
+.cell{
+  width:var(--cs);height:var(--cs);display:grid;place-items:center;
+  border:1.5px solid var(--grid);margin:0 -1.5px -1.5px 0;background:var(--card);
+  font-family:var(--f-disp);font-weight:700;font-size:calc(var(--cs)*.64);line-height:1;
+}
+.cell.blank{border:2px dashed var(--pen);background:var(--pen-soft);position:relative;z-index:1}
+.cell.blank.filled{border-style:solid;color:var(--pen);animation:pop .35s ease-out}
+.cell.sm{--cs:34px}
+@keyframes pop{from{transform:scale(.7);opacity:.3}to{transform:scale(1);opacity:1}}
+
+/* ヘッダー */
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.brand{background:none;border:0;padding:0;text-align:left}
+.count{text-align:right;line-height:1.3}
+.count b{display:block;font-family:var(--f-disp);font-size:28px;font-weight:800;color:var(--pen)}
+.count b i{font-style:normal;font-size:15px;color:var(--ink);font-weight:700}
+
+.status{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:12px}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.panel b{display:block;font-family:var(--f-disp);font-size:22px;font-weight:800;line-height:1.35}
+.bar{height:8px;background:var(--soft);border-radius:4px;overflow:hidden;margin:8px 0 4px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.seg{display:flex;gap:8px}
+.seg button{flex:1;min-height:48px;border:1.5px solid var(--line);background:var(--card);border-radius:10px;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.card{
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:center;text-align:left;
+  background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;min-height:96px;
+}
+.card:hover{border-color:var(--accent)}
+.card:last-child:nth-child(odd){grid-column:1/-1}
+.card .cell{grid-row:span 3;--cs:52px}
+.card .nm{font-weight:700;font-size:18px;line-height:1.3}
+.card .sb{font-size:13px;color:var(--ink2);line-height:1.4}
+.card .mm{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink2)}
+.card .mm .bar{flex:1;margin:0}
+.primary{
+  background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:16px 20px;
+  font-weight:700;font-size:18px;min-height:64px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;
+}
+.primary small{color:inherit;opacity:.85;font-weight:500;font-size:13px}
+.ghost{
+  background:transparent;border:1.5px dashed var(--grid);border-radius:12px;padding:14px 16px;min-height:60px;width:100%;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:700;text-align:left
+}
+.ghost:disabled{opacity:.5;cursor:default}
+.ghost b{color:var(--pen);font-family:var(--f-disp);font-size:20px}
+.note{font-size:12px;color:var(--ink2);text-align:center}
+
+/* クイズ */
+.qbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.back{border:1.5px solid var(--line);background:var(--card);border-radius:10px;min-height:44px;padding:0 14px;font-weight:700}
+.pips{display:flex;gap:4px;flex:1;min-width:140px;flex-wrap:wrap}
+.pips i{width:18px;height:18px;border:1.5px solid var(--grid);background:var(--card);display:block}
+.pips i.ok{background:var(--accent);border-color:var(--accent)}
+.pips i.ng{border-color:var(--pen);background:var(--pen-soft)}
+.pips i.now{border-color:var(--ink);border-width:2.5px}
+.chip{font-size:13px;font-weight:700;color:var(--pen)}
+.qcard{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:16px}
+.tag{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent);border:1.5px solid var(--accent);border-radius:999px;padding:0 10px}
+.ins{margin:0;color:var(--ink2);font-size:14px;line-height:1.6}
+.body{font-family:var(--f-disp);font-weight:700;font-size:clamp(22px,4.6vw,30px);line-height:1.7;margin:0;text-wrap:balance}
+.body .u{text-decoration:underline;text-decoration-color:var(--pen);text-decoration-thickness:3px;text-underline-offset:6px}
+.body .blank{display:inline-block;min-width:3.6em;border-bottom:3px solid var(--ink);text-align:center;color:var(--pen);line-height:1.3;margin:0 4px}
+.body .wd{font-size:clamp(28px,6vw,40px)}
+.mean{margin:0;padding:10px 14px;background:var(--soft);border-radius:8px;font-size:15px}
+.mean b{color:var(--accent)}
+.choices{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+.choices.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.choice{
+  position:relative;display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 16px;text-align:left;
+  background:var(--card);border:1.5px solid var(--line);border-radius:10px;color:var(--ink);line-height:1.5;
+}
+.choice:not(:disabled):hover{border-color:var(--accent)}
+.choice:not(:disabled):active{transform:scale(.99)}
+.choice:disabled{cursor:default;color:var(--ink)}
+.choice .mk{flex:none;width:30px;height:30px;border:1.5px solid var(--grid);border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--ink2)}
+.choice .tx{min-width:0;overflow-wrap:anywhere}
+.choices.two .choice .tx{font-family:var(--f-disp);font-weight:700;font-size:24px}
+.choice.dim{opacity:.5}
+.choice.right{background:var(--soft);border-color:var(--pen)}
+.choice.wrong{border:1.5px dashed var(--pen)}
+.choice .bt{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:34px;line-height:1;color:var(--pen);font-weight:700;animation:pop .3s ease-out}
+.maru{
+  position:absolute;inset:-6px -9px;border:3.5px solid var(--pen);border-radius:48% 52% 50% 50%/62% 56% 60% 54%;
+  transform:rotate(-1.2deg);pointer-events:none;clip-path:inset(-12px 100% -12px -12px);
+  animation:draw .55s cubic-bezier(.3,.7,.3,1) forwards;
+}
+@keyframes draw{to{clip-path:inset(-12px -12px -12px -12px)}}
+.fb{border-top:2px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:10px}
+.fb .h{font-family:var(--f-disp);font-weight:800;font-size:26px;color:var(--pen);line-height:1.3}
+.fb .h.ng{color:var(--ink)}
+.fb .h.ng span{color:var(--pen)}
+.fb p{margin:0}
+.fb .done{font-family:var(--f-disp);font-weight:700;font-size:20px}
+.fb .ex{color:var(--ink2);font-size:15px}
+.next{align-self:flex-end;min-width:200px;min-height:56px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:17px;padding:0 24px}
+
+/* 結果 */
+.score{display:flex;align-items:baseline;gap:10px;font-family:var(--f-disp);color:var(--pen);font-weight:800}
+.score b{font-size:72px;line-height:1;border-bottom:4px double var(--pen);padding:0 6px 2px}
+.score span{font-size:22px}
+.list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.list li{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.list .q{font-family:var(--f-disp);font-weight:700;font-size:18px}
+.list .a{font-size:14px}
+.list .a b{color:var(--pen)}
+.list .e{font-size:13px;color:var(--ink2)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row>button{flex:1 1 200px}
+.btn{min-height:56px;border-radius:12px;font-weight:700;border:1.5px solid var(--ink);background:var(--card);padding:0 20px}
+.btn.fill{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.up{background:var(--pen-soft);border:1.5px solid var(--pen);border-radius:10px;padding:10px 14px;font-weight:700}
+.empty{color:var(--ink2);padding:24px;text-align:center;border:1.5px dashed var(--grid);border-radius:12px}
+
+@media (max-width:560px){
+  .status{grid-template-columns:minmax(0,1fr)}
+  .choices.two .choice .tx{font-size:22px}
+  .next{align-self:stretch}
+  .score b{font-size:60px}
+}
+@media (prefers-reduced-motion:reduce){
+  .maru{animation:none;clip-path:none}
+  .cell.blank.filled,.choice .bt{animation:none}
+}
+</style>
+
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ===== 問題データ ===== */
+
+// ことわざ・慣用句: [問題, 答え, ダミー3つ, 意味, 解説]
+const K=[
+['猿も□から落ちる','木',['山','枝','岩'],'その道の名人でも、失敗することがある','木登りが得意な猿でも、まちがえて木から落ちることがある。似た意味は「弘法にも筆の誤り」「河童の川流れ」。'],
+['石の上にも□年','三',['五','十','百'],'つらくてもがまんして続ければ、いつか成功する','冷たい石の上でも三年すわり続ければ、あたたまるということ。'],
+['立つ鳥あとを□さず','濁',['残','消','隠'],'去るときは、あとがみにくくならないよう始末をしておく','水鳥は飛び立ったあと、水をにごさない。「あとをにごす」と使う。'],
+['花より□子','団',['菓','餅','食'],'見た目の美しさより、実際に役立つものを選ぶ','花見に行っても、花をながめるより団子を食べるほうがよい、ということ。'],
+['二階から□薬','目',['口','耳','頭'],'思うようにいかず、もどかしい。効き目がうすい','二階から下にいる人に目薬をさそうとしても、うまくいかない。'],
+['猫に□判','小',['大','金','銀'],'価値のわからない者に、よいものをあたえてもむだ','「小判」は昔の金貨。似た意味は「豚に真珠」「馬の耳に念仏」。'],
+['弘法にも□の誤り','筆',['字','墨','書'],'名人でも、ときには失敗する','弘法大師（空海）は書の名人とされる。そんな人でも書きまちがえることがある。'],
+['急がば□れ','回',['走','休','戻'],'急ぐときは、あぶない近道より安全な遠回りのほうが、かえって早い','「回れ」は「まわれ」と読む。急ぐ気持ちをおさえて、確実な道を選ぶことのたとえ。'],
+['老いては□に従え','子',['親','孫','師'],'年をとったら、若い人の意見にも素直に従うのがよい','年をとったら、何でも自分で決めようとせず、子の意見にも従うほうがよいということ。'],
+['寝耳に□','水',['風','雷','火'],'思いがけない知らせに、おどろく','ねている耳に水が入ったら、とびおきるほどおどろく。'],
+['馬の耳に□仏','念',['神','大','釈'],'意見を言っても、まったく聞こうとしない','「念仏」は仏にいのる言葉。馬に聞かせてもわからない。似た意味は「馬耳東風」。'],
+['ぬかに□','釘',['針','杭','棒'],'手ごたえがなく、少しも効き目がない','「ぬか」は米ぬか。やわらかいぬかに釘を打っても、手ごたえがない。似た意味は「豆腐にかすがい」「のれんに腕押し」。'],
+['□が棒になる','足',['腰','手','膝'],'長く歩いたり立ったりして、足がひどくつかれる','足がかたくなって、棒のように動かしにくくなるようす。'],
+['□を長くして待つ','首',['足','耳','目'],'今か今かと、待ちこがれる','首をのばして、遠くをのぞむようすから。'],
+['□を巻く','舌',['首','腕','目'],'相手のすばらしさにおどろき、感心する','おどろいて舌がまるまり、ものが言えなくなるようすから。'],
+['□が軽い','口',['目','耳','鼻'],'言ってはいけないことを、すぐ人に話してしまう','反対の意味は「口が堅い」。'],
+['顔が□い','広',['長','大','太'],'知り合いが多い','「顔」は、世間での知名度や付き合いのこと。'],
+['□をさす','水',['茶','塩','雨'],'うまくいっているものを、じゃまする','仲のよい二人の間に水を入れてじゃまするイメージ。「水を差す」と書く。'],
+['鼻が□い','高',['長','大','広'],'じまんして、得意になる','天狗の鼻が高いことから。「鼻が高い」は、人にほこれるという意味でも使う。']
+];
+
+// 敬語: [問題, 答え, ダミー3つ, 解説]
+const G=[
+['先生が教室に（　）。','いらっしゃいます',['まいります','うかがいます','いたします'],'先生の動作なので尊敬語「いらっしゃる」。「まいる」「うかがう」「いたす」は、自分をへりくだる謙譲語。'],
+['私が明日、先生のお宅に（　）。','うかがいます',['いらっしゃいます','おっしゃいます','めしあがります'],'自分の動作なので謙譲語。「うかがう」は「行く」の謙譲語。ほかの三つは先生に使う尊敬語。'],
+['お客様がお菓子を（　）。','めしあがります',['いただきます','いたします','拝見します'],'お客様の動作なので尊敬語「めしあがる」（食べる）。「いただく」は自分が食べるときの謙譲語。'],
+['私は先生がかいた絵を（　）。','拝見しました',['ごらんになりました','おっしゃいました','めしあがりました'],'見るのは自分なので謙譲語「拝見する」。「ごらんになる」は相手が見るときの尊敬語。'],
+['校長先生が「おめでとう」と（　）。','おっしゃいました',['申しました','申し上げました','いただきました'],'言うのは校長先生なので尊敬語「おっしゃる」。「申す」「申し上げる」は自分が言うときの謙譲語。'],
+['私が先生にお礼を（　）。','申し上げました',['おっしゃいました','めしあがりました','いらっしゃいました'],'言うのは自分なので謙譲語。「言う」の謙譲語は「申す」「申し上げる」。'],
+['社長は来週、本社に（　）予定です。','お戻りになる',['まいる','うかがう','拝見する'],'社長の動作なので尊敬語。「お〜になる」の形でも相手に敬意をあらわせる。'],
+['私は先生から本を（　）。','いただきました',['くださいました','さしあげました','めしあがりました'],'「もらう」の謙譲語は「いただく」。「くださる」は、相手が自分にくれるときの尊敬語。'],
+['先生が私に本を（　）。','くださいました',['いただきました','さしあげました','申し上げました'],'「くれる」の尊敬語は「くださる」。「さしあげる」は自分が相手にあげるときの謙譲語。'],
+['先生は毎朝、新聞を（　）。','お読みになります',['拝読します','いただきます','申します'],'読むのは先生なので尊敬語。「お読みになる」「読まれる」。「拝読する」は自分が読むときの謙譲語。'],
+['「いらっしゃる」は、どの種類の敬語ですか。','尊敬語',['謙譲語','丁寧語','美化語'],'「行く・来る・いる」の尊敬語。相手の動作を高めて敬意をあらわす。'],
+['「申す」は、どの種類の敬語ですか。','謙譲語',['尊敬語','丁寧語','美化語'],'「言う」の謙譲語。自分の動作をへりくだって、相手に敬意をあらわす。'],
+['「お菓子」の「お」は、どの種類の敬語ですか。','美化語',['尊敬語','謙譲語','丁寧語'],'ものごとを上品に言うための敬語。相手の動作ではなく、ことばを美しく整える。'],
+['「雨がふります」の「ます」は、どの種類の敬語ですか。','丁寧語',['尊敬語','謙譲語','美化語'],'「です・ます」は、話や文章を丁寧にする丁寧語。']
+];
+
+// 多義語: [語, 文(〔〕が下線部), 選択肢4つ, 正解の番号, 解説]
+const A1=['ほがらかで陽気だ','光が十分あって、よく見える','ある分野にくわしい','よい見通しがもてる'];
+const A2=['融通がきかない','力を加えても形が変わりにくい','ゆるぎなく確かだ','緊張して、ぎこちない'];
+const A3=['ためして確かめる','世話をする','目に入れる、ながめる','考えて判断する'];
+const A4=['はたらく人','方法・やり方','手のひらから指先の部分','字の書きぶり'];
+const A5=['ぶつかる','光や風がとどく','選ばれる・的中する','その役を受け持つ'];
+const A6=['目方が大きい','責任が大きい','気分が晴れない','動きがにぶい'];
+const T=[
+['明るい','彼はいつも〔明るい〕性格だ',A1,0,'性格がほがらかで、くよくよしないようす。'],
+['明るい','兄は音楽にとても〔明るい〕',A1,2,'「〜に明るい」は、その分野によくくわしいという意味。'],
+['明るい','これからの未来は〔明るい〕',A1,3,'「明るい未来」は、希望がもてるという意味。'],
+['明るい','この部屋は窓が大きくて〔明るい〕',A1,1,'光が十分に入って、よく見えるようす。'],
+['かたい','祖父は頭が〔かたい〕',A2,0,'「頭がかたい」は、考え方に融通がきかないこと。'],
+['かたい','〔かたい〕パンをスープにひたして食べる',A2,1,'力を加えても形が変わりにくい、という元の意味。'],
+['かたい','二人は〔かたい〕約束をかわした',A2,2,'「かたい約束」は、ゆるぎなく確かな約束。'],
+['かたい','面接で〔かたい〕表情になってしまった',A2,3,'緊張して、表情や動きがぎこちないようす。'],
+['みる','スープの味を〔みる〕',A3,0,'「味をみる」は、ためして確かめること。'],
+['みる','母が祖母のめんどうを〔みる〕',A3,1,'「めんどうをみる」は、世話をすること。'],
+['みる','窓から夜空の星を〔みる〕',A3,2,'目に入れて、ながめること。'],
+['みる','この計画は、むずかしいと〔みる〕人が多い',A3,3,'「〜とみる」は、考えて判断すること。'],
+['手','いそがしくて〔手〕が足りない',A4,0,'「手が足りない」は、はたらく人が足りないこと。'],
+['手','ほかの〔手〕を考えてみよう',A4,1,'「手」には、方法・やり方の意味もある。'],
+['手','祖母の〔手〕は、あたたかい',A4,2,'体の一部としての、元の意味。'],
+['あたる','ボールがかべに〔あたる〕',A5,0,'物がぶつかること。'],
+['あたる','窓に朝日が〔あたる〕',A5,1,'光や風が、そこにとどくこと。'],
+['あたる','くじに〔あたる〕',A5,2,'選ばれること、的中すること。'],
+['あたる','私が新入生の案内に〔あたる〕',A5,3,'「〜にあたる」は、その役を受け持つこと。'],
+['重い','この荷物は〔重い〕',A6,0,'目方が大きいという元の意味。'],
+['重い','リーダーの責任は〔重い〕',A6,1,'責任が大きく、重大だということ。'],
+['重い','発表の前の日は、気が〔重い〕',A6,2,'「気が重い」は、気分が晴れないこと。'],
+['重い','寝不足で、朝は体が〔重い〕',A6,3,'体の動きがにぶく、だるいようす。']
+];
+
+// 外来語: [語, 意味, 解説]
+const W=[
+['ジレンマ','どちらを選んでも困り、迷って決められない状態','「宿題もしたいし遊びにも行きたい」のように、どちらを選んでも困る状態のこと。'],
+['ニュアンス','色・音・意味などの、ちょっとした微妙な違い','同じような言葉でも、感じに違いがある。「言い方のニュアンス」のように使う。'],
+['モチベーション','何かをするための、やる気や動機','「モチベーションが上がる」は、やる気が出ること。'],
+['コンテンツ','本・映像・ゲームなどの、中身や内容','「デジタルコンテンツ」のように使う。'],
+['シェア','分け合うこと。また、全体の中で占める割合','「市場シェア」は、市場全体の中で占める割合のこと。'],
+['インバウンド','外国から日本に、旅行などで来ること','反対に、日本から外国へ行くことは「アウトバウンド」。'],
+['リスク','悪いことが起こる危険や、その可能性','「リスクをおかす」「リスクが高い」のように使う。'],
+['メリット','利益や長所など、よい点','反対の意味の言葉は「デメリット」。'],
+['デメリット','不利益や短所など、よくない点','反対の意味の言葉は「メリット」。'],
+['アイデンティティ','「これが自分だ」と言える、自分らしさ','「日本人としてのアイデンティティ」のように、自分とは何かという意識のこと。'],
+['プライオリティ','ものごとをする順番。優先順位','「プライオリティが高い」は、優先して先にやるべきだということ。'],
+['サステナブル','将来にわたって続けられる、持続可能な','環境や資源を守りながら続けられること。「サステナブルな社会」。'],
+['バリアフリー','高齢者や障がいのある人にとっての、かべを取りのぞくこと','「バリア」はかべやさまたげ、「フリー」はないこと。段差をなくす工夫など。'],
+['コンセプト','全体をつらぬく、基本的な考え方','「新商品のコンセプト」のように、企画の中心になる考え方。'],
+['エビデンス','ある主張を支える、証拠や根拠','「エビデンスにもとづく」は、証拠や根拠にもとづくということ。'],
+['ボランティア','自分から進んで、社会のために活動する人','もとは「自分から進んでする人」という意味。お金のためではなく、自分の意志で行う。'],
+['ポジティブ','前向きで、積極的なようす','反対の意味の言葉は「ネガティブ」。'],
+['ネガティブ','後ろ向きで、消極的なようす','反対の意味の言葉は「ポジティブ」。'],
+['ユニバーサルデザイン','年齢や障がいに関係なく、だれもが使いやすい設計','バリアフリーは「あとから壁を取りのぞく」、ユニバーサルデザインは「はじめからだれもが使いやすく作る」考え方。']
+];
+const CONFLICT={'バリアフリー':['ユニバーサルデザイン'],'ユニバーサルデザイン':['バリアフリー']};
+
+// 文学作品: [作品, 作者, 区分(m近代 c古典 f外国), 解説]
+const B=[
+['坊っちゃん','夏目漱石','m','松山の中学校に赴任した、まっすぐな教師が主人公。'],
+['吾輩は猫である','夏目漱石','m','猫の目から、人間のようすをえがいた長編小説。'],
+['羅生門','芥川龍之介','m','平安時代の京都を舞台にした短編小説。'],
+['蜘蛛の糸','芥川龍之介','m','地獄のカンダタに、お釈迦さまが蜘蛛の糸をたらす話。'],
+['走れメロス','太宰治','m','友のために走る青年メロスの物語。'],
+['銀河鉄道の夜','宮沢賢治','m','少年ジョバンニが銀河を旅する童話。'],
+['注文の多い料理店','宮沢賢治','m','山おくの西洋料理店で起こる、不思議な話。'],
+['ごんぎつね','新美南吉','m','いたずら好きの子ぎつねと、兵十の話。'],
+['手袋を買いに','新美南吉','m','子ぎつねが、手袋を買いに町へ行く話。'],
+['舞姫','森鷗外','m','ドイツ留学を題材にした小説。'],
+['雪国','川端康成','m','雪深い温泉町を舞台にした小説。ノーベル文学賞を受けた作家。'],
+['たけくらべ','樋口一葉','m','下町で育つ少年少女をえがいた小説。女性作家。'],
+['みだれ髪','与謝野晶子','m','情熱的な歌をおさめた歌集。「君死にたまふことなかれ」の詩でも有名。'],
+['一握の砂','石川啄木','m','生活の中の思いをよんだ歌集。'],
+['源氏物語','紫式部','c','平安時代の長編物語。主人公は光源氏。'],
+['枕草子','清少納言','c','平安時代の随筆。「春はあけぼの」で始まる。'],
+['徒然草','兼好法師','c','鎌倉時代の終わりごろの随筆。吉田兼好ともいう。'],
+['方丈記','鴨長明','c','鎌倉時代のはじめの随筆。「ゆく河の流れは絶えずして」で始まる。'],
+['おくのほそ道','松尾芭蕉','c','江戸時代の俳諧紀行文。旅の俳句と文章でつづる。'],
+['赤毛のアン','L・M・モンゴメリ','f','カナダのプリンスエドワード島が舞台の物語。'],
+['不思議の国のアリス','ルイス・キャロル','f','白うさぎを追って穴に落ちる、少女の物語。'],
+['ハリー・ポッター','J・K・ローリング','f','魔法学校に入る少年の物語。'],
+['シャーロック・ホームズ','コナン・ドイル','f','名探偵ホームズが活やくする推理小説。'],
+['星の王子さま','サン＝テグジュペリ','f','フランスの作家。小さな星から来た王子の話。'],
+['若草物語','オルコット','f','アメリカの四姉妹をえがいた物語。'],
+['トム・ソーヤーの冒険','マーク・トウェイン','f','ミシシッピ川の町の少年トムの冒険。'],
+['十五少年漂流記','ヴェルヌ','f','無人島に流れ着いた少年たちの物語。']
+];
+
+const TYPES={
+  k:{name:'ことわざ・慣用句',sub:'□に漢字一字を入れる',ch:'慣'},
+  g:{name:'敬語',sub:'尊敬語・謙譲語・丁寧語',ch:'敬'},
+  t:{name:'多義語',sub:'文の中での意味を選ぶ',ch:'義'},
+  w:{name:'外来語',sub:'カタカナ語の意味',ch:'外'},
+  b:{name:'文学作品',sub:'作品と作者の組み合わせ',ch:'作'}
+};
+const ORDER=['k','g','t','w','b'];
+
+const ITEMS=[];
+K.forEach(([q,a,d,m,e])=>ITEMS.push({id:'k|'+q,type:'k',q,a,d,m,e}));
+G.forEach(([q,a,d,e])=>ITEMS.push({id:'g|'+q,type:'g',q,a,d,e}));
+T.forEach(([w,s,c,i,e])=>ITEMS.push({id:'t|'+s,type:'t',w,s,a:c[i],d:c.filter((_,j)=>j!==i),e}));
+W.forEach(([w,a,e])=>ITEMS.push({id:'w|'+w,type:'w',w,a,e}));
+B.forEach(([t,a,sub,e])=>ITEMS.push({id:'b|'+t,type:'b',t,a,sub,e}));
+
+/* ===== 保存 ===== */
+const LS='gokudojo-v1';
+const blank=()=>({st:{},xp:0,day:{d:'',n:0,c:0},len:10});
+let store=blank();
+try{
+  const raw=localStorage.getItem(LS);
+  if(raw){const o=JSON.parse(raw);if(o&&typeof o==='object')store=Object.assign(blank(),o);}
+}catch(e){}
+function save(){try{localStorage.setItem(LS,JSON.stringify(store));}catch(e){}}
+
+/* ===== 道具 ===== */
+const MARKS=['ア','イ','ウ','エ'];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sample=(a,n)=>shuffle(a).slice(0,n);
+const uniq=a=>a.filter((x,i)=>a.indexOf(x)===i);
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+const RANKS=[[0,'語句の見習い'],[100,'語句の旅人'],[300,'ことば使い'],[600,'語彙の達人'],[1000,'ことば博士'],[1600,'語彙の名人']];
+function rankOf(xp){let r=0;RANKS.forEach((x,i)=>{if(xp>=x[0])r=i;});return r;}
+function daysLeft(){
+  const now=new Date();const t0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  return Math.round((new Date(2027,1,1)-t0)/864e5);
+}
+const stat=id=>store.st[id];
+const mastered=it=>{const s=stat(it.id);return !!(s&&s.r>=2&&!s.w);};
+const inNote=it=>{const s=stat(it.id);return !!(s&&s.w);};
+
+function weight(it){
+  const s=stat(it.id);let w=1;
+  if(!s||!s.s)w+=1.5;else{w+=(1-s.c/s.s)*2;if(s.r>=2)w-=0.6;}
+  if(s&&s.w)w+=3;
+  return Math.max(w,0.3);
+}
+function pickWeighted(pool,n){
+  const arr=pool.map(it=>({it,w:weight(it)}));const out=[];
+  while(out.length<n&&arr.length){
+    const sum=arr.reduce((t,x)=>t+x.w,0);let r=Math.random()*sum,k=0;
+    for(;k<arr.length;k++){r-=arr[k].w;if(r<=0)break;}
+    if(k>=arr.length)k=arr.length-1;
+    out.push(arr.splice(k,1)[0].it);
+  }
+  return out;
+}
+function makeQ(it){
+  let d=it.d;
+  if(it.type==='w'){
+    const bad=CONFLICT[it.w]||[];
+    d=sample(W.filter(x=>x[0]!==it.w&&bad.indexOf(x[0])<0).map(x=>x[1]),3);
+  }
+  if(it.type==='b'){
+    d=sample(uniq(B.filter(x=>x[2]===it.sub&&x[1]!==it.a).map(x=>x[1])),3);
+  }
+  return {it,choices:shuffle([it.a].concat(d)),picked:null,ok:false};
+}
+
+/* ===== 画面の部品 ===== */
+function cellsHTML(q,ans,a){
+  return Array.from(q).map(ch=>ch==='□'
+    ?'<span class="cell blank'+(ans?' filled':'')+'">'+(ans?esc(a):'')+'</span>'
+    :'<span class="cell">'+esc(ch)+'</span>').join('');
+}
+function plainStem(it){
+  if(it.type==='k')return it.q.replace('□','【'+it.a+'】');
+  if(it.type==='g')return it.q.indexOf('（　）')>=0?it.q.replace('（　）','【'+it.a+'】'):it.q;
+  if(it.type==='t')return '【'+it.w+'】'+it.s.replace(/[〔〕]/g,'');
+  if(it.type==='w')return it.w;
+  return '『'+it.t+'』';
+}
+function bodyHTML(q,ans){
+  const it=q.it;
+  if(it.type==='k')return '<div class="cells" role="img" aria-label="'+esc(it.q.replace('□','（　）'))+'">'+cellsHTML(it.q,ans,it.a)+'</div>'+
+    '<p class="mean"><b>意味</b>　'+esc(it.m)+'</p>';
+  if(it.type==='g'){
+    if(it.q.indexOf('（　）')<0)return '<p class="body">'+esc(it.q)+'</p>';
+    const fill='<span class="blank">'+(ans?esc(it.a):'')+'</span>';
+    return '<p class="body">'+esc(it.q).replace('（　）',fill)+'</p>';
+  }
+  if(it.type==='t'){
+    const s=esc(it.s).replace('〔','<span class="u">').replace('〕','</span>');
+    return '<p class="body">【'+esc(it.w)+'】　'+s+'</p>';
+  }
+  if(it.type==='w')return '<p class="body"><span class="wd">'+esc(it.w)+'</span></p>';
+  return '<p class="body">『'+esc(it.t)+'』</p>';
+}
+function insText(it){
+  if(it.type==='k')return '□に漢字一字を入れて、ことわざ・慣用句を完成させなさい。';
+  if(it.type==='g')return it.q.indexOf('（　）')>=0?'（　）にあてはまる、最もふさわしいものを選びなさい。':'最もふさわしいものを選びなさい。';
+  if(it.type==='t')return '次の文の下線部は、どの意味で使われていますか。最もふさわしいものを選びなさい。';
+  if(it.type==='w')return '次の外来語の意味として、最もふさわしいものを選びなさい。';
+  return '次の作品の作者として、最もふさわしい人を選びなさい。';
+}
+
+/* ===== 状態 ===== */
+const app=document.getElementById('app');
+const state={screen:'home',round:null};
+const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function startRound(key){
+  let pool;
+  if(key==='review')pool=ITEMS.filter(inNote);
+  else if(key==='all')pool=ITEMS;
+  else pool=ITEMS.filter(i=>i.type===key);
+  if(!pool.length)return;
+  const n=Math.min(store.len,pool.length);
+  state.round={key,qs:pickWeighted(pool,n).map(makeQ),i:0,score:0,streak:0,xp:0,rank0:rankOf(store.xp)};
+  state.screen='quiz';
+  render(true);
+}
+function choose(j){
+  const R=state.round,q=R.qs[R.i];if(!q||q.picked!==null)return;
+  q.picked=j;const ok=q.choices[j]===q.it.a;q.ok=ok;
+  const s=store.st[q.it.id]||(store.st[q.it.id]={s:0,c:0,r:0,w:0});
+  s.s++;
+  if(ok){s.c++;s.r++;if(s.r>=2)s.w=0;}else{s.r=0;s.w=1;}
+  const d=todayStr();if(store.day.d!==d)store.day={d:d,n:0,c:0};
+  store.day.n++;if(ok)store.day.c++;
+  if(ok){R.score++;R.streak++;const g=10+2*Math.min(R.streak-1,5);R.xp+=g;store.xp+=g;}else R.streak=0;
+  save();render(false);
+}
+function next(){
+  const R=state.round;
+  if(R.i+1>=R.qs.length){state.screen='result';render(true);}
+  else{R.i++;render(true);}
+}
+
+/* ===== 画面 ===== */
+function viewHome(){
+  const dl=daysLeft();
+  const r=rankOf(store.xp);const cur=RANKS[r][0];const nx=RANKS[r+1];
+  const pct=nx?Math.round((store.xp-cur)/(nx[0]-cur)*100):100;
+  const d=store.day.d===todayStr()?store.day:{n:0,c:0};
+  const noteN=ITEMS.filter(inNote).length;
+  const countHTML=dl>0?'入試まで<b><i>あと</i> '+dl+' <i>日</i></b><small>2027年2月1日</small>'
+    :dl===0?'<b>入試当日</b><small>2027年2月1日</small>':'<small>2027年2月1日の入試は終わりました</small>';
+  const cards=ORDER.map(k=>{
+    const pool=ITEMS.filter(i=>i.type===k);const m=pool.filter(mastered).length;
+    return '<button class="card" data-a="start" data-t="'+k+'">'+
+      '<span class="cell">'+TYPES[k].ch+'</span>'+
+      '<span class="nm">'+TYPES[k].name+'</span><span class="sb">'+TYPES[k].sub+'</span>'+
+      '<span class="mm"><span class="bar"><i style="width:'+Math.round(m/pool.length*100)+'%"></i></span>覚えた '+m+' / '+pool.length+'</span></button>';
+  }).join('');
+  const allM=ITEMS.filter(mastered).length;
+  return '<header class="top"><div class="cells" aria-label="語句道場">'+
+      Array.from('語句道場').map(c=>'<span class="cell sm">'+c+'</span>').join('')+'</div>'+
+      '<div class="count">'+countHTML+'</div></header>'+
+    '<section class="status">'+
+      '<div class="panel"><small>称号</small><b>'+RANKS[r][1]+'</b><div class="bar"><i style="width:'+pct+'%"></i></div>'+
+      '<small>'+(nx?'次の称号まで あと '+(nx[0]-store.xp)+' ポイント':'最高の称号です')+'</small></div>'+
+      '<div class="panel"><small>今日</small><b>'+d.n+'問</b><small>正解 '+d.c+'　／　覚えた語句 '+allM+'</small></div>'+
+    '</section>'+
+    '<section style="display:flex;flex-direction:column;gap:10px"><h2>1回の問題数</h2><div class="seg">'+
+      [5,10,20].map(n=>'<button data-a="len" data-n="'+n+'" aria-pressed="'+(store.len===n)+'">'+n+'問</button>').join('')+'</div></section>'+
+    '<button class="primary" data-a="start" data-t="all"><span>ぜんぶまぜて始める<br><small>まだ出ていない語句と、苦手な語句を多めに出します</small></span><span aria-hidden="true">→</span></button>'+
+    '<section style="display:flex;flex-direction:column;gap:10px"><h2>分野をえらぶ</h2><div class="cards">'+cards+'</div></section>'+
+    '<button class="ghost" data-a="notebook" '+(noteN?'':'disabled')+'><span>復習ノート<br><small>まちがえた語句を、2回続けて正解するまで残します</small></span><b>'+noteN+'問</b></button>'+
+    '<p class="note">進み具合は、この端末のブラウザに保存されます。</p>';
+}
+
+function viewQuiz(){
+  const R=state.round,q=R.qs[R.i],it=q.it,ans=q.picked!==null;
+  const pips=R.qs.map((x,i)=>'<i class="'+(x.picked!==null?(x.ok?'ok':'ng'):(i===R.i?'now':''))+'"></i>').join('');
+  const maxLen=Math.max.apply(null,q.choices.map(c=>Array.from(c).length));
+  const two=maxLen<=6;
+  const ch=q.choices.map((c,j)=>{
+    let cls='choice',extra='';
+    if(ans){
+      if(c===it.a){cls+=' right';extra='<span class="maru"></span>';}
+      else if(j===q.picked){cls+=' wrong';extra='<span class="bt" aria-hidden="true">×</span>';}
+      else cls+=' dim';
+    }
+    return '<button class="'+cls+'" data-a="choose" data-i="'+j+'"'+(ans?' disabled':'')+'><span class="mk">'+MARKS[j]+'</span><span class="tx">'+esc(c)+'</span>'+extra+'</button>';
+  }).join('');
+  let fb='';
+  if(ans){
+    const last=R.i+1>=R.qs.length;
+    const done=it.type==='k'?'<p class="done">'+esc(it.q.replace('□',it.a))+'</p>':'';
+    fb='<div class="fb" id="fb" aria-live="polite">'+
+      (q.ok?'<div class="h">正解！</div>':'<div class="h ng">ざんねん。正解は <span>「'+esc(it.a)+'」</span></div>')+
+      done+'<p class="ex">'+esc(it.e)+'</p>'+
+      '<button class="next" data-a="next">'+(last?'結果を見る':'つぎの問題へ')+'</button></div>';
+  }
+  return '<div class="qbar"><button class="back" data-a="home">やめる</button><div class="pips" aria-label="'+(R.i+1)+'問目 / '+R.qs.length+'問">'+pips+'</div>'+
+    (R.streak>=2?'<span class="chip">れんぞく '+R.streak+'</span>':'')+'</div>'+
+    '<article class="qcard"><span class="tag">'+(R.key==='review'?'復習　':'')+TYPES[it.type].name+'</span>'+
+    '<p class="ins">'+(R.i+1)+'.　'+insText(it)+'</p>'+bodyHTML(q,ans)+
+    '<div class="choices'+(two?' two':'')+'">'+ch+'</div>'+fb+'</article>';
+}
+
+function missRows(list){
+  return '<ul class="list">'+list.map(it=>'<li><span class="q">'+esc(plainStem(it))+'</span>'+
+    (it.type==='k'?'<span class="a">意味：'+esc(it.m)+'</span>':'<span class="a">正解：<b>'+esc(it.a)+'</b></span>')+
+    '<span class="e">'+esc(it.e)+'</span></li>').join('')+'</ul>';
+}
+function viewResult(){
+  const R=state.round,n=R.qs.length,p=R.score/n;
+  const msg=p>=0.9?'ほぼ完ぺきです。':p>=0.7?'いい調子です。':p>=0.5?'あと一歩です。まちがえた語句を見直しましょう。':'ここからが伸びどころです。まちがえた語句を、もう一度やってみましょう。';
+  const miss=R.qs.filter(q=>!q.ok).map(q=>q.it);
+  const r1=rankOf(store.xp);
+  const up=r1>R.rank0?'<div class="up">称号が上がりました：'+RANKS[r1][1]+'</div>':'';
+  const noteN=ITEMS.filter(inNote).length;
+  return '<div class="qbar"><button class="back" data-a="home">ホームへ</button></div>'+
+    '<section class="qcard"><small>今回の得点</small><div class="score"><b>'+R.score+'</b><span>／ '+n+'</span></div>'+
+    '<p style="margin:0">'+msg+'　獲得 '+R.xp+' ポイント</p>'+up+'</section>'+
+    (miss.length?'<section style="display:flex;flex-direction:column;gap:10px"><h2>まちがえた語句（復習ノートに入りました）</h2>'+missRows(miss)+'</section>':
+      '<div class="empty">全問正解です。</div>')+
+    '<div class="row"><button class="btn fill" data-a="start" data-t="'+(R.key==='review'?'all':R.key)+'">もう一度</button>'+
+    (noteN?'<button class="btn" data-a="review">復習ノートをやる（'+noteN+'問）</button>':'')+'</div>';
+}
+function viewNotebook(){
+  const list=ITEMS.filter(inNote);
+  return '<div class="qbar"><button class="back" data-a="home">ホームへ</button><h2 style="margin:0">復習ノート　'+list.length+'問</h2></div>'+
+    (list.length?missRows(list)+'<button class="primary" data-a="review"><span>復習をはじめる</span><span aria-hidden="true">→</span></button>':
+      '<div class="empty">復習する語句はありません。</div>');
+}
+
+function render(top){
+  app.innerHTML=state.screen==='home'?viewHome():state.screen==='quiz'?viewQuiz():state.screen==='result'?viewResult():viewNotebook();
+  if(top){window.scrollTo(0,0);}
+  else{const fb=document.getElementById('fb');if(fb)fb.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'});}
+}
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b||b.disabled)return;
+  const a=b.getAttribute('data-a');
+  if(a==='start')startRound(b.getAttribute('data-t'));
+  else if(a==='choose')choose(+b.getAttribute('data-i'));
+  else if(a==='next')next();
+  else if(a==='home'){state.screen='home';render(true);}
+  else if(a==='len'){store.len=+b.getAttribute('data-n');save();render(false);}
+  else if(a==='notebook'){state.screen='notebook';render(true);}
+  else if(a==='review')startRound('review');
+});
+
+render(true);
+})();
+</script>
+</body>
+</html>
