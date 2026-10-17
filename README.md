@@ -1,4 +1,4 @@
-# 語句道場
+# Wild Word World
 
 中学受験・国語の語句問題を4択で練習するWebゲーム（iPad向け）。
 https://ainotenoue.github.io/goku-dojo/
