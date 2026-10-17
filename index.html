@@ -547,7 +547,7 @@ function viewHome(){
   }).join('');
   const allM=ITEMS.filter(mastered).length;
   return '<header class="hero"><span class="badge">'+badge+'</span><h1 class="title">語句道場</h1>'+
-      '<p class="lead">〜言葉世界の'+best+'を目指そう〜</p></header>'+
+      '<p class="lead">〜'+best+'を目指そう〜</p></header>'+
     '<section class="status">'+
       '<div class="panel"><div class="l1"><small>称号</small><b>'+RANKS[r][1]+'</b></div>'+
       '<div class="l2"><span class="bar"><i style="width:'+pct+'%"></i></span><small>'+(nx?'次の称号まで あと '+(nx[0]-store.xp)+' ポイント':'最高の称号です')+'</small></div></div>'+
