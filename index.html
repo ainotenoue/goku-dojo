@@ -84,7 +84,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .lab{font-size:14px;font-weight:700;color:var(--ink2);margin:0 0 8px}
 .seg{display:flex;gap:10px}
 .seg button{flex:1;min-height:50px;border:2px solid var(--line);background:#fff;border-radius:14px;font-weight:700}
-.seg button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.seg button[aria-pressed="true"]{background:#fff1df;color:#a8480f;border-color:#ff9a4d}
 
 .cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
 .card{
@@ -117,6 +117,8 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
   display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:700;text-align:left
 }
 .ghost:disabled{opacity:.55;cursor:default}
+.gl{display:flex;align-items:center;gap:14px;min-width:0}
+.nicon{width:56px;height:42px;flex:none}
 .ghost b{color:var(--pen);font-size:22px;font-weight:800;white-space:nowrap}
 .note{font-size:12px;color:var(--ink2);text-align:center;margin:0}
 
@@ -388,6 +390,14 @@ const TYPES={
   w:{name:'外来語',sub:'カタカナ語の意味',ic:'🌏'},
   b:{name:'文学作品',sub:'作品と作者の組み合わせ',ic:'📖'}
 };
+const NOTE_ICON='<svg class="nicon" viewBox="0 0 64 48" aria-hidden="true">'+
+  '<rect x="2" y="6" width="60" height="38" rx="5" fill="#f98a3a"/>'+
+  '<path d="M6 10 Q19 6 31 11 L31 42 Q19 37 6 41 Z" fill="#fff"/>'+
+  '<path d="M58 10 Q45 6 33 11 L33 42 Q45 37 58 41 Z" fill="#fff"/>'+
+  '<path d="M10 18 Q19 15 27 18 M10 24 Q19 21 27 24 M10 30 Q19 27 27 30 M10 36 Q19 33 27 36" stroke="#e7c79a" stroke-width="2" stroke-linecap="round" fill="none"/>'+
+  '<path d="M37 18 Q45 15 54 18 M37 24 Q45 21 54 24 M37 30 Q45 27 54 30" stroke="#e7c79a" stroke-width="2" stroke-linecap="round" fill="none"/>'+
+  '<path d="M38 36 L42 40 L52 31" stroke="#e0392d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'+
+  '<path d="M32 11 L32 42" stroke="#d9a066" stroke-width="2"/></svg>';
 const ORDER=['k','g','t','w','b'];
 
 const ITEMS=[];
@@ -548,7 +558,7 @@ function viewHome(){
     '<button class="primary" data-a="start" data-t="all"><span>全分野に挑戦！</span><span aria-hidden="true">→</span></button>'+
     '<div><p class="lab">1回の問題数</p><div class="seg">'+
       [5,10,20].map(n=>'<button data-a="len" data-n="'+n+'" aria-pressed="'+(store.len===n)+'">'+n+'問</button>').join('')+'</div></div>'+
-    '<button class="ghost" data-a="notebook" '+(noteN?'':'disabled')+'><span>復習ノート<br><small>まちがえた語句を、2回続けて正解するまで残します</small></span><b>'+noteN+'問</b></button>'+
+    '<button class="ghost" data-a="notebook" '+(noteN?'':'disabled')+'><span class="gl">'+NOTE_ICON+'<span>復習ノート<br><small>つまづいた問題を攻略してパワーアップ！</small></span></span><b>'+noteN+'問</b></button>'+
     '</section>'+
     '<p class="note">進み具合は、この端末のブラウザに保存されます。</p>';
 }
@@ -622,7 +632,7 @@ function viewResult(){
 function viewNotebook(){
   const list=ITEMS.filter(inNote);
   return '<div class="qbar"><button class="back" data-a="home">ホームへ</button></div>'+
-    '<header class="hero sm"><h1 class="title">復習ノート</h1><p class="lead">2回続けて正解すると、ノートから消えます</p></header>'+
+    '<header class="hero sm"><h1 class="title">復習ノート</h1><p class="lead">つまづいた問題を攻略してパワーアップ！</p></header>'+
     (list.length?'<section class="stage"><div class="sec"><h2>まちがえた語句　'+list.length+'問</h2></div>'+missRows(list)+'</section>'+
       '<div class="sticky"><button class="primary" data-a="review"><span>復習をはじめる（'+Math.min(list.length,store.len)+'問）</span><span aria-hidden="true">→</span></button></div>':
       '<div class="empty">復習する語句はありません。<br><small>問題をまちがえると、ここにたまります。</small></div>');
