@@ -194,9 +194,9 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .oshii.l2{font-size:38px}
 .oshii.l3,.seikai{font-size:54px}
 /* 正解のときに中央へポンと出て、消えていく大きな〇 */
-.bigmaru{position:absolute;left:50%;top:50%;height:min(104%,450px);aspect-ratio:1/1;z-index:5;pointer-events:none;opacity:0;transform:translate(-50%,-50%);animation:maru 2.1s ease-out forwards}
+.bigmaru{position:absolute;left:50%;top:50%;height:min(120%,530px);aspect-ratio:1/1;z-index:5;pointer-events:none;opacity:0;transform:translate(-50%,-50%);animation:maru 2.1s ease-out forwards}
 .bigmaru svg{width:100%;height:100%;display:block;overflow:visible}
-.bigmaru circle{fill:none;stroke:var(--pen);stroke-width:5;opacity:.75}
+.bigmaru circle{fill:none;stroke:var(--pen);stroke-width:3.6;opacity:.75}
 @keyframes maru{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}11%{transform:translate(-50%,-50%) scale(1.08);opacity:1}17%{transform:translate(-50%,-50%) scale(1);opacity:1}79%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.05);opacity:0}}
 /* 「正解！」はまっすぐ（安定）。ぽんと出て落ち着く */
 .seikai{transform:none;animation:settle .45s ease-out}
@@ -217,7 +217,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
   .oshii.l1{font-size:17px}
   .oshii.l2{font-size:26px}
   .oshii.l3,.seikai{font-size:36px}
-  .bigmaru{height:min(90%,340px)}
+  .bigmaru{height:min(100%,360px)}
   .score b{font-size:60px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -566,7 +566,7 @@ function viewQuiz(){
     const done=it.type==='k'?'<p class="done">'+esc(it.q.replace('□',it.a))+'</p>':'';
     fb='<div class="fb" id="fb" aria-live="polite">'+
       done+'<p class="ex">'+esc(it.e)+'</p>'+
-      '<button class="next" data-a="next">'+(last?'結果を見る':'つぎの問題へ')+'</button></div>';
+      '<button class="next" data-a="next">'+(last?'結果を見る':'次へ')+'</button></div>';
   }
   const mean=it.type==='k'?'<p class="mean"><b>意味</b>　'+esc(it.m)+'</p>':'';
   return '<div class="qbar"><button class="back" data-a="home">もどる</button><div class="pips" aria-label="'+(R.i+1)+'問目 / '+R.qs.length+'問">'+pips+'</div>'+
