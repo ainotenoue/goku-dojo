@@ -1,6 +1,7 @@
 # 語句道場
 
 中学受験・国語の語句問題を4択で練習するWebゲーム（iPad向け）。
+https://ainotenoue.github.io/goku-dojo/
 
 ## 分野
 - ことわざ・慣用句（□に漢字一字）
