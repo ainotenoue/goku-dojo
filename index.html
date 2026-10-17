@@ -26,6 +26,7 @@
   --accent-ink:#ffffff;
   --pen:#e0392d;
   --pen-soft:#fdeceb;
+  --miss:#7f8fb0;
   --ok:#14966a;
   --ok-soft:#e5f6ee;
   --c-k:#d9561a;--c-g:#2766d1;--c-t:#6f43c0;--c-w:#13875f;--c-b:#d33a77;
@@ -151,7 +152,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .choices.two .choice .tx{font-weight:800;font-size:24px}
 .choice.dim{opacity:.5}
 .choice.right{background:var(--pen-soft);border-color:var(--pen)}
-.choice.wrong{border:2px dashed var(--pen);opacity:.75}
+.choice.wrong{border:2px dashed var(--miss);opacity:.8}
 .choice .bt{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:34px;line-height:1;color:var(--pen);font-weight:700;animation:pop .3s ease-out}
 .maru{position:absolute;inset:-4px;border:4.5px solid var(--pen);border-radius:19px;pointer-events:none;clip-path:inset(-8px 100% -8px -8px);animation:draw .5s cubic-bezier(.3,.7,.3,1) forwards}
 @keyframes draw{to{clip-path:inset(-8px -8px -8px -8px)}}
@@ -193,10 +194,10 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .oshii.l2{font-size:38px}
 .oshii.l3,.seikai{font-size:54px}
 /* 正解のときに中央へポンと出て、消えていく大きな〇 */
-.bigmaru{position:absolute;left:50%;top:50%;height:min(104%,450px);aspect-ratio:1/1;z-index:5;pointer-events:none;opacity:0;transform:translate(-50%,-50%);animation:maru 2.2s ease-out forwards}
+.bigmaru{position:absolute;left:50%;top:50%;height:min(104%,450px);aspect-ratio:1/1;z-index:5;pointer-events:none;opacity:0;transform:translate(-50%,-50%);animation:maru 2.1s ease-out forwards}
 .bigmaru svg{width:100%;height:100%;display:block;overflow:visible}
-.bigmaru circle{fill:none;stroke:var(--pen);stroke-width:7;opacity:.75}
-@keyframes maru{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}11%{transform:translate(-50%,-50%) scale(1.08);opacity:1}16%{transform:translate(-50%,-50%) scale(1);opacity:1}80%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.05);opacity:0}}
+.bigmaru circle{fill:none;stroke:var(--pen);stroke-width:5;opacity:.75}
+@keyframes maru{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}11%{transform:translate(-50%,-50%) scale(1.08);opacity:1}17%{transform:translate(-50%,-50%) scale(1);opacity:1}79%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.05);opacity:0}}
 /* 「正解！」はまっすぐ（安定）。ぽんと出て落ち着く */
 .seikai{transform:none;animation:settle .45s ease-out}
 @keyframes settle{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
@@ -568,7 +569,7 @@ function viewQuiz(){
       '<button class="next" data-a="next">'+(last?'結果を見る':'つぎの問題へ')+'</button></div>';
   }
   const mean=it.type==='k'?'<p class="mean"><b>意味</b>　'+esc(it.m)+'</p>':'';
-  return '<div class="qbar"><button class="back" data-a="home">やめる</button><div class="pips" aria-label="'+(R.i+1)+'問目 / '+R.qs.length+'問">'+pips+'</div>'+
+  return '<div class="qbar"><button class="back" data-a="home">もどる</button><div class="pips" aria-label="'+(R.i+1)+'問目 / '+R.qs.length+'問">'+pips+'</div>'+
     (R.streak>=2?'<span class="chip">れんぞく '+R.streak+'</span>':'')+'</div>'+
     '<article class="qcard">'+maru+'<div class="qtop"><div class="qmain">'+
     '<div class="trow"><span class="tag" style="--tc:var(--c-'+it.type+')">'+(R.key==='review'?'復習　':'')+TYPES[it.type].name+'</span>'+
