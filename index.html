@@ -165,22 +165,35 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .fb .ex{color:var(--ink);font-size:15px}
 .next{align-self:flex-end;min-width:210px;min-height:58px;border:0;border-radius:16px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:var(--accent-ink);font-weight:800;font-size:18px;padding:0 26px;box-shadow:0 6px 14px rgba(232,89,12,.28)}
 
-/* 結果 */
-.score{display:flex;align-items:baseline;gap:10px;color:var(--pen);font-weight:900}
-.score b{font-size:72px;line-height:1;border-bottom:4px double var(--pen);padding:0 6px 2px}
+/* 結果・復習ノート */
+.res{align-items:center;text-align:center;gap:14px}
+.score{display:flex;align-items:baseline;justify-content:center;gap:10px;color:var(--pen);font-weight:900}
+.score b{font-size:80px;line-height:1;border-bottom:5px double var(--pen);padding:0 8px 2px}
 .score span{font-size:22px}
-.list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
-.list li{background:#fff;border-radius:16px;padding:12px 16px;display:flex;flex-direction:column;gap:4px;box-shadow:0 3px 12px rgba(120,90,30,.1)}
-.list .q{font-weight:800;font-size:18px}
-.list .a{font-size:14px}
-.list .a b{color:var(--pen)}
-.list .e{font-size:13px;color:var(--ink2)}
+.msg{margin:0;font-weight:700;font-size:17px}
+.res .pips{flex:none;justify-content:center;min-width:0}
+.pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.pill{display:inline-flex;align-items:baseline;gap:6px;background:var(--soft);border-radius:999px;padding:2px 16px;font-weight:700;font-size:14px}
+.pill b{color:var(--accent);font-size:18px;font-weight:800}
+.up{width:100%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border-radius:18px;padding:12px 16px;font-weight:800;font-size:18px;box-shadow:0 6px 14px rgba(232,89,12,.28)}
+.perfect{background:linear-gradient(145deg,#27a577,#0f7a56);color:#fff;border-radius:22px;padding:18px;text-align:center;font-weight:900;font-size:24px;box-shadow:0 8px 18px rgba(30,30,60,.16)}
+.sec{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sec h2{font-size:clamp(18px,3.2vw,22px);font-weight:800;color:var(--ink)}
+.list{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.miss{background:var(--soft);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.miss .tag{font-size:12px}
+.miss .q{font-weight:800;font-size:19px;line-height:1.5}
+.miss .hl{color:var(--pen)}
+.miss .a{font-size:15px}
+.miss .a b{color:var(--pen)}
+.miss .e{font-size:14px;color:var(--ink)}
 .row{display:flex;gap:12px;flex-wrap:wrap}
 .row>button{flex:1 1 200px}
-.btn{min-height:56px;border-radius:16px;font-weight:800;border:2px solid var(--ink);background:#fff;padding:0 20px}
-.btn.fill{background:linear-gradient(135deg,var(--accent2),var(--accent));border-color:transparent;color:var(--accent-ink)}
-.up{background:var(--pen-soft);border:2px solid var(--pen);border-radius:14px;padding:10px 14px;font-weight:800}
-.empty{color:var(--ink2);padding:24px;text-align:center;border:2px dashed #e7c79a;border-radius:18px;background:#fff}
+.btn{min-height:58px;border-radius:18px;font-weight:800;font-size:17px;border:2px solid var(--ink);background:#fff;padding:0 20px}
+.btn.fill{background:linear-gradient(135deg,var(--accent2),var(--accent));border:0;color:var(--accent-ink);box-shadow:0 6px 14px rgba(232,89,12,.28)}
+.sticky{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:6}
+.hero.sm .title{font-size:clamp(34px,7vw,48px)}
+.empty{color:var(--ink);padding:28px 20px;text-align:center;border:2px dashed #e7c79a;border-radius:22px;background:#fff;font-weight:700;line-height:1.8}
 
 /* 問題カードの上段: 左に分野と本文、右に〇・おしい！ */
 .qtop{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
@@ -579,9 +592,13 @@ function viewQuiz(){
 }
 
 function missRows(list){
-  return '<ul class="list">'+list.map(it=>'<li><span class="q">'+esc(plainStem(it))+'</span>'+
-    (it.type==='k'?'<span class="a">意味：'+esc(it.m)+'</span>':'<span class="a">正解：<b>'+esc(it.a)+'</b></span>')+
-    '<span class="e">'+esc(it.e)+'</span></li>').join('')+'</ul>';
+  return '<ul class="list">'+list.map(it=>{
+    const blank=it.type==='g'&&it.q.indexOf('（　）')>=0;
+    let q=esc(plainStem(it));
+    if(it.type==='k'||blank)q=q.replace(/【(.*?)】/,'<b class="hl">$1</b>');
+    const a=it.type==='k'?'<span class="a">意味：'+esc(it.m)+'</span>':blank?'':'<span class="a">正解：<b>'+esc(it.a)+'</b></span>';
+    return '<li class="miss"><span class="tag" style="--tc:var(--c-'+it.type+')">'+TYPES[it.type].name+'</span><span class="q">'+q+'</span>'+a+'<span class="e">'+esc(it.e)+'</span></li>';
+  }).join('')+'</ul>';
 }
 function viewResult(){
   const R=state.round,n=R.qs.length,p=R.score/n;
@@ -590,19 +607,25 @@ function viewResult(){
   const r1=rankOf(store.xp);
   const up=r1>R.rank0?'<div class="up">称号が上がりました：'+RANKS[r1][1]+'</div>':'';
   const noteN=ITEMS.filter(inNote).length;
+  const pips=R.qs.map(x=>'<i class="'+(x.ok?'ok':'ng')+'"></i>').join('');
   return '<div class="qbar"><button class="back" data-a="home">ホームへ</button></div>'+
-    '<section class="qcard"><small>今回の得点</small><div class="score"><b>'+R.score+'</b><span>／ '+n+'</span></div>'+
-    '<p style="margin:0">'+msg+'　獲得 '+R.xp+' ポイント</p>'+up+'</section>'+
-    (miss.length?'<section style="display:flex;flex-direction:column;gap:10px"><h2>まちがえた語句（復習ノートに入りました）</h2>'+missRows(miss)+'</section>':
-      '<div class="empty">全問正解です。</div>')+
+    '<section class="stage res"><h2 class="big">結果発表！</h2>'+
+    '<div class="score"><b>'+R.score+'</b><span>／ '+n+' 問正解</span></div>'+
+    '<div class="pips" aria-hidden="true">'+pips+'</div>'+
+    '<p class="msg">'+msg+'</p>'+
+    '<div class="pills"><span class="pill">獲得 <b>+'+R.xp+'</b> ポイント</span><span class="pill">称号 <b>'+RANKS[r1][1]+'</b></span></div>'+up+'</section>'+
+    (miss.length?'<section class="stage"><div class="sec"><h2>まちがえた語句　'+miss.length+'問</h2><small>復習ノートに入りました</small></div>'+missRows(miss)+'</section>':
+      '<div class="perfect">全問正解です！</div>')+
     '<div class="row"><button class="btn fill" data-a="start" data-t="'+(R.key==='review'?'all':R.key)+'">もう一度</button>'+
     (noteN?'<button class="btn" data-a="review">復習ノートをやる（'+noteN+'問）</button>':'')+'</div>';
 }
 function viewNotebook(){
   const list=ITEMS.filter(inNote);
-  return '<div class="qbar"><button class="back" data-a="home">ホームへ</button><h2 style="margin:0">復習ノート　'+list.length+'問</h2></div>'+
-    (list.length?missRows(list)+'<button class="primary" data-a="review"><span>復習をはじめる</span><span aria-hidden="true">→</span></button>':
-      '<div class="empty">復習する語句はありません。</div>');
+  return '<div class="qbar"><button class="back" data-a="home">ホームへ</button></div>'+
+    '<header class="hero sm"><h1 class="title">復習ノート</h1><p class="lead">2回続けて正解すると、ノートから消えます</p></header>'+
+    (list.length?'<section class="stage"><div class="sec"><h2>まちがえた語句　'+list.length+'問</h2></div>'+missRows(list)+'</section>'+
+      '<div class="sticky"><button class="primary" data-a="review"><span>復習をはじめる（'+Math.min(list.length,store.len)+'問）</span><span aria-hidden="true">→</span></button></div>':
+      '<div class="empty">復習する語句はありません。<br><small>問題をまちがえると、ここにたまります。</small></div>');
 }
 
 function render(top){
