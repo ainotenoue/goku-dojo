@@ -193,10 +193,13 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .oshii.l2{font-size:38px}
 .oshii.l3,.seikai{font-size:54px}
 /* 正解のときに中央へポンと出て、消えていく大きな〇 */
-.bigmaru{position:absolute;left:50%;top:50%;height:min(90%,380px);aspect-ratio:1/1;z-index:5;pointer-events:none;opacity:0;transform:translate(-50%,-50%);animation:maru 1.2s ease-out forwards}
+.bigmaru{position:absolute;left:50%;top:50%;height:min(104%,450px);aspect-ratio:1/1;z-index:5;pointer-events:none;opacity:0;transform:translate(-50%,-50%);animation:maru 2.2s ease-out forwards}
 .bigmaru svg{width:100%;height:100%;display:block;overflow:visible}
 .bigmaru circle{fill:none;stroke:var(--pen);stroke-width:7;opacity:.75}
-@keyframes maru{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}20%{transform:translate(-50%,-50%) scale(1.08);opacity:1}30%{transform:translate(-50%,-50%) scale(1);opacity:1}62%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.05);opacity:0}}
+@keyframes maru{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}11%{transform:translate(-50%,-50%) scale(1.08);opacity:1}16%{transform:translate(-50%,-50%) scale(1);opacity:1}80%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.05);opacity:0}}
+/* 「正解！」はまっすぐ（安定）。ぽんと出て落ち着く */
+.seikai{transform:none;animation:settle .45s ease-out}
+@keyframes settle{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
 @keyframes shake{0%{transform:rotate(-7deg) scale(.6);opacity:0}40%{transform:rotate(-12deg) scale(1.1);opacity:1}70%{transform:rotate(-4deg)}100%{transform:rotate(-7deg)}}
 
 @media (max-width:560px){
@@ -213,7 +216,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
   .oshii.l1{font-size:17px}
   .oshii.l2{font-size:26px}
   .oshii.l3,.seikai{font-size:36px}
-  .bigmaru{height:min(80%,300px)}
+  .bigmaru{height:min(90%,340px)}
   .score b{font-size:60px}
 }
 @media (prefers-reduced-motion:reduce){
