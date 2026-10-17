@@ -186,11 +186,17 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .qmain{display:flex;flex-direction:column;gap:12px;min-width:0}
 .trow{display:flex;align-items:center;gap:12px}
 .prog{font-size:18px;font-weight:800;color:var(--ink2);letter-spacing:.04em;font-variant-numeric:tabular-nums}
-.slot{width:104px;min-height:84px;display:flex;justify-content:center;align-items:flex-start}
-.ring{width:84px;height:84px;overflow:visible}
-.ring circle{fill:none;stroke:var(--pen);stroke-width:9;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transform:rotate(-110deg);transform-origin:50% 50%;animation:ring .6s ease-out forwards}
-@keyframes ring{to{stroke-dashoffset:0}}
-.oshii{font-size:26px;font-weight:900;color:var(--pen);line-height:1.2;white-space:nowrap;transform:rotate(-7deg);transform-origin:center;animation:shake .5s ease-out}
+.slot{min-width:0;display:flex;justify-content:flex-end;align-items:flex-start;padding:4px 6px 0 0}
+/* 「おしい！」はまちがいが続くほど大きくなる（1回目→3回目）。「正解！」は3段階目と同じ大きさ */
+.oshii,.seikai{font-weight:900;color:var(--pen);line-height:1.2;white-space:nowrap;transform:rotate(-7deg);transform-origin:center;animation:shake .5s ease-out}
+.oshii.l1{font-size:24px}
+.oshii.l2{font-size:38px}
+.oshii.l3,.seikai{font-size:54px}
+/* 正解のときに中央へポンと出て、消えていく大きな〇 */
+.bigmaru{position:absolute;left:50%;top:50%;height:min(90%,380px);aspect-ratio:1/1;z-index:5;pointer-events:none;opacity:0;transform:translate(-50%,-50%);animation:maru 1.2s ease-out forwards}
+.bigmaru svg{width:100%;height:100%;display:block;overflow:visible}
+.bigmaru circle{fill:none;stroke:var(--pen);stroke-width:7;opacity:.75}
+@keyframes maru{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}20%{transform:translate(-50%,-50%) scale(1.08);opacity:1}30%{transform:translate(-50%,-50%) scale(1);opacity:1}62%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.05);opacity:0}}
 @keyframes shake{0%{transform:rotate(-7deg) scale(.6);opacity:0}40%{transform:rotate(-12deg) scale(1.1);opacity:1}70%{transform:rotate(-4deg)}100%{transform:rotate(-7deg)}}
 
 @media (max-width:560px){
@@ -204,15 +210,16 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
   .card .hd{gap:6px}
   .choices.two .choice .tx{font-size:22px}
   .next{align-self:stretch}
-  .slot{width:76px;min-height:64px}
-  .ring{width:64px;height:64px}
-  .oshii{font-size:19px}
+  .oshii.l1{font-size:17px}
+  .oshii.l2{font-size:26px}
+  .oshii.l3,.seikai{font-size:36px}
+  .bigmaru{height:min(80%,300px)}
   .score b{font-size:60px}
 }
 @media (prefers-reduced-motion:reduce){
   .maru{animation:none;clip-path:none}
-  .ring circle{animation:none;stroke-dashoffset:0}
-  .oshii{animation:none}
+  .oshii,.seikai{animation:none}
+  .bigmaru{animation:none}
   .cell.blank.filled,.choice .bt{animation:none}
   .card{transition:none}
 }
@@ -546,20 +553,21 @@ function viewQuiz(){
     return '<button class="'+cls+'" data-a="choose" data-i="'+j+'"'+dis+'><span class="mk">'+MARKS[j]+'</span><span class="tx">'+esc(c)+'</span>'+extra+'</button>';
   }).join('');
   let stamp='';
-  if(q.done)stamp='<svg class="ring" viewBox="0 0 100 100" role="img" aria-label="正解"><circle cx="50" cy="50" r="40" pathLength="1"/></svg>';
-  else if(q.wrong.length)stamp='<div class="oshii" role="status">おしい！</div>';
+  if(q.done)stamp='<div class="seikai" role="status">正解！</div>';
+  else if(q.wrong.length)stamp='<div class="oshii l'+Math.min(q.wrong.length,3)+'" role="status">おしい！</div>';
+  const maru=q.done?'<div class="bigmaru" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42"/></svg></div>':'';
   let fb='';
   if(q.done){
     const last=R.i+1>=R.qs.length;
     const done=it.type==='k'?'<p class="done">'+esc(it.q.replace('□',it.a))+'</p>':'';
-    fb='<div class="fb" id="fb" aria-live="polite"><div class="h">正解！</div>'+
+    fb='<div class="fb" id="fb" aria-live="polite">'+
       done+'<p class="ex">'+esc(it.e)+'</p>'+
       '<button class="next" data-a="next">'+(last?'結果を見る':'つぎの問題へ')+'</button></div>';
   }
   const mean=it.type==='k'?'<p class="mean"><b>意味</b>　'+esc(it.m)+'</p>':'';
   return '<div class="qbar"><button class="back" data-a="home">やめる</button><div class="pips" aria-label="'+(R.i+1)+'問目 / '+R.qs.length+'問">'+pips+'</div>'+
     (R.streak>=2?'<span class="chip">れんぞく '+R.streak+'</span>':'')+'</div>'+
-    '<article class="qcard"><div class="qtop"><div class="qmain">'+
+    '<article class="qcard">'+maru+'<div class="qtop"><div class="qmain">'+
     '<div class="trow"><span class="tag" style="--tc:var(--c-'+it.type+')">'+(R.key==='review'?'復習　':'')+TYPES[it.type].name+'</span>'+
     '<span class="prog" aria-hidden="true">'+(R.i+1)+'/'+R.qs.length+'</span></div>'+
     bodyHTML(q,q.done)+'</div><div class="slot">'+stamp+'</div></div>'+mean+
