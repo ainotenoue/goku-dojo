@@ -424,7 +424,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor
 const sample=(a,n)=>shuffle(a).slice(0,n);
 const uniq=a=>a.filter((x,i)=>a.indexOf(x)===i);
 function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-const RANKS=[[0,'語句の見習い'],[100,'語句の旅人'],[300,'ことば使い'],[600,'語彙の達人'],[1000,'ことば博士'],[1600,'語彙の名人']];
+const RANKS=[[0,'ことばの見習い'],[100,'ことばの戦士'],[300,'ことばの勇者'],[600,'ことばの賢者'],[1000,'ことばの英雄'],[1600,'ことばの伝説']];
 function rankOf(xp){let r=0;RANKS.forEach((x,i)=>{if(xp>=x[0])r=i;});return r;}
 function daysLeft(){
   const now=new Date();const t0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
