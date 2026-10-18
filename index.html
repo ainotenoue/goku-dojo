@@ -143,12 +143,31 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 /* クイズ */
 .qbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .back{border:2px solid var(--line);background:#fff;border-radius:14px;min-height:46px;padding:0 16px;font-weight:700}
-.pips{display:flex;gap:5px;flex:1;min-width:140px;flex-wrap:wrap}
-.pips i{width:20px;height:20px;border:2px solid #ecd5c0;background:#fff;display:block;border-radius:6px}
+/* コンボゲージ: 正解の丸が点灯し、続けて正解した丸どうしを線でつなぐ */
+.pips{display:flex;gap:8px;flex:1;min-width:140px;flex-wrap:wrap;align-items:center}
+.pips i{position:relative;width:20px;height:20px;border:2px solid #ecd5c0;background:#fff;display:block;border-radius:50%}
 .pips i.ok{background:var(--ok);border-color:var(--ok)}
 .pips i.ng{border-color:var(--pen);background:var(--pen-soft)}
 .pips i.now{border-color:var(--ink)}
-.chip{font-size:14px;font-weight:800;color:var(--accent)}
+.pips i.lk::before{content:"";position:absolute;right:100%;top:50%;width:12px;height:4px;margin-top:-2px;margin-right:0;background:var(--ok);border-radius:2px}
+.pips i.lit{animation:pop .35s ease-out}
+.pips i.lit.lk::before{transform-origin:left;animation:link .3s ease-out}
+@keyframes link{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.chip{font-size:15px;font-weight:900;color:var(--ok);white-space:nowrap}
+/* コンボ演出 */
+.combo{position:absolute;left:50%;top:-6px;z-index:6;pointer-events:none;white-space:nowrap;font-weight:900;line-height:1;color:var(--ok);
+  -webkit-text-stroke:2px #fff;paint-order:stroke fill;text-shadow:0 4px 10px rgba(40,90,60,.25);opacity:0;transform:translate(-50%,0);animation:combo 1.9s cubic-bezier(.2,.8,.3,1) forwards}
+.combo.c3{font-size:40px}
+.combo.c5{font-size:52px;color:#e0456f;text-shadow:0 4px 12px rgba(224,69,111,.3)}
+.combo.c8{font-size:58px;color:#7b5cd6;text-shadow:0 4px 14px rgba(123,92,214,.35)}
+.combo.c10{font-size:72px;letter-spacing:.04em;color:#ff7a59;background:linear-gradient(90deg,#ff6b8b,#ffa34d,#ffd84d,#5fd38d,#4db8ff,#9b7bff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;-webkit-text-stroke:0;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 2px #fff) drop-shadow(0 5px 10px rgba(120,80,200,.35))}
+@keyframes combo{0%{opacity:0;transform:translate(-50%,10px) scale(.4)}14%{opacity:1;transform:translate(-50%,-22px) scale(1.15)}24%{transform:translate(-50%,-18px) scale(1) rotate(-3deg)}34%{transform:translate(-50%,-18px) scale(1) rotate(2deg)}44%{transform:translate(-50%,-18px) rotate(0)}80%{opacity:1;transform:translate(-50%,-18px) scale(1)}100%{opacity:0;transform:translate(-50%,-34px) scale(1.04)}}
+.qcard.glow5{box-shadow:0 0 0 4px #ffbdbd,0 10px 36px rgba(224,69,111,.28)}
+.qcard.glow8{box-shadow:0 0 0 5px #cec4e9,0 10px 40px rgba(123,92,214,.32)}
+.qcard.glow10{box-shadow:0 0 0 6px #ffddb3,0 0 0 10px #ffbdbd,0 12px 44px rgba(255,140,90,.4)}
+.best{font-size:13px;font-weight:800;color:var(--ink2);margin-left:auto;white-space:nowrap}
+.best b{color:var(--ok);font-size:16px}
+.newbest{display:inline-block;margin-left:4px;padding:1px 10px;border-radius:999px;background:var(--btn);color:var(--ink);font-weight:900;font-size:13px;animation:settle .5s ease-out .3s both}
 .qcard{position:relative;background:#fff;border-radius:26px;padding:clamp(18px,3.4vw,28px);display:flex;flex-direction:column;gap:16px;box-shadow:0 10px 36px rgba(200,140,100,.2)}
 .tag{align-self:flex-start;font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--tci,#fff);border:2px solid var(--tc,var(--accent));border-radius:999px;padding:0 12px;background:var(--tc,var(--accent))}
 .ins{margin:0;color:var(--ink2);font-size:14px;line-height:1.6}
@@ -318,6 +337,8 @@ button.panel.zk{border:0;width:100%;font:inherit;text-align:left;cursor:pointer;
   .maru{animation:none;clip-path:none}
   .oshii,.seikai{animation:none}
   .bigmaru{animation:none}
+  .combo{animation:none;opacity:1;transform:translate(-50%,-18px)}
+  .pips i.lit,.pips i.lit.lk::before,.newbest{animation:none}
   .cell.blank.filled,.choice .bt{animation:none}
   .card{transition:none}
 }
@@ -925,7 +946,7 @@ Y.forEach(([a,m,e])=>ITEMS.push({id:'y|'+a,type:'y',a,m,e}));
 
 /* ===== 保存 ===== */
 const LS='gokudojo-v1';
-const blank=()=>({st:{},xp:0,day:{d:'',n:0,c:0},len:10,col:[]});
+const blank=()=>({st:{},xp:0,day:{d:'',n:0,c:0},len:10,col:[],best:0});
 let store=blank();
 try{
   const raw=localStorage.getItem(LS);
@@ -1034,9 +1055,23 @@ function startRound(key){
   else pool=ITEMS.filter(i=>i.type===key);
   if(!pool.length)return;
   const n=Math.min(store.len,pool.length);
-  state.round={key,qs:pickWeighted(pool,n).map(makeQ),i:0,score:0,streak:0,xp:0,rank0:rankOf(store.xp),newCards:[]};
+  state.round={key,qs:pickWeighted(pool,n).map(makeQ),i:0,score:0,streak:0,maxStreak:0,best0:store.best||0,xp:0,rank0:rankOf(store.xp),newCards:[]};
   state.screen='quiz';
   render(true);
+}
+/* コンボ演出: 連続正解数 → [表示, 段階] */
+const COMBO={3:'c3',5:'c5',8:'c8',10:'c10'};
+const COMBO_TXT={c3:'3連続！',c5:'すごい！',c8:'8連続！',c10:'SUPER！'};
+function comboLv(n){return n>=10?10:n>=8?8:n>=5?5:0;}
+/* ゲージ: 正解の丸は点灯、直前も正解なら線でつなぐ */
+function gauge(qs,cur,litIdx){
+  return qs.map((x,i)=>{
+    const st=x.first===null?null:x.first;
+    let c=st===null?(i===cur?'now':''):(st?'ok':'ng');
+    if(st&&i>0&&qs[i-1].first===true)c+=' lk';
+    if(i===litIdx&&st)c+=' lit';
+    return '<i class="'+c+'"></i>';
+  }).join('');
 }
 function choose(j){
   const R=state.round,q=R.qs[R.i];
@@ -1051,7 +1086,11 @@ function choose(j){
     if(ok&&s.r>=2&&!s.w&&store.col.indexOf(q.it.id)<0){store.col.push(q.it.id);R.newCards.push(q.it);}
     const d=todayStr();if(store.day.d!==d)store.day={d:d,n:0,c:0};
     store.day.n++;if(ok)store.day.c++;
-    if(ok){R.score++;R.streak++;const g=10+2*Math.min(R.streak-1,5);R.xp+=g;store.xp+=g;}else R.streak=0;
+    if(ok){R.score++;R.streak++;const g=10+2*Math.min(R.streak-1,5);R.xp+=g;store.xp+=g;
+      if(R.streak>R.maxStreak)R.maxStreak=R.streak;
+      if(R.streak>(store.best||0))store.best=R.streak;
+      q.combo=COMBO[R.streak]||0;
+    }else R.streak=0;
     save();
   }
   if(ok)q.done=true;else q.wrong.push(j);
@@ -1082,7 +1121,7 @@ function viewHome(){
   return '<header class="hero"><div class="bwrap"><span class="badge">'+badge+'</span><span class="ver">v1.0</span></div><h1 class="title">Wild Word World</h1>'+
       '<p class="lead">〜'+best+'を目指そう〜</p></header>'+
     '<section class="status">'+
-      '<div class="panel"><div class="l1"><small>称号</small><b>'+RANKS[r][1]+'</b></div>'+
+      '<div class="panel"><div class="l1"><small>称号</small><b>'+RANKS[r][1]+'</b>'+(store.best?'<span class="best">最大コンボ <b>'+store.best+'</b></span>':'')+'</div>'+
       '<div class="l2"><span class="bar"><i style="width:'+pct+'%"></i></span><small>'+(nx?'次の称号まで あと '+(nx[0]-store.xp)+' ポイント':'最高の称号です')+'</small></div></div>'+
       '<button class="panel zk" data-a="zukan">'+zukanIcon(r+1)+'<div class="zt"><div class="zn">ことば図鑑</div><div class="zc"><b>'+allM+'</b><small> / '+ITEMS.length+'</small></div><span class="bar"><i style="width:'+Math.round(allM/ITEMS.length*100)+'%"></i></span></div><span class="zgo" aria-hidden="true">›</span></button>'+
     '</section>'+
@@ -1097,7 +1136,7 @@ function viewHome(){
 
 function viewQuiz(){
   const R=state.round,q=R.qs[R.i],it=q.it;
-  const pips=R.qs.map((x,i)=>'<i class="'+(x.first!==null?(x.first?'ok':'ng'):(i===R.i?'now':''))+'"></i>').join('');
+  const pips=gauge(R.qs,R.i,q.done&&q.first?R.i:-1);
   const maxLen=Math.max.apply(null,q.choices.map(c=>Array.from(c).length));
   const two=maxLen<=6&&it.type!=='b';
   const ch=q.choices.map((c,j)=>{
@@ -1125,8 +1164,9 @@ function viewQuiz(){
   }
   const mean=it.type==='k'?'<p class="mean"><b>意味</b>　'+esc(it.m)+'</p>':'';
   return '<div class="qbar"><button class="back" data-a="home">もどる</button><div class="pips" aria-label="'+(R.i+1)+'問目 / '+R.qs.length+'問">'+pips+'</div>'+
-    (R.streak>=2?'<span class="chip">れんぞく '+R.streak+'</span>':'')+'</div>'+
-    '<article class="qcard">'+maru+'<div class="qtop"><div class="qmain">'+
+    (R.streak>=2?'<span class="chip">'+R.streak+'連続</span>':'')+'</div>'+
+    '<article class="qcard'+(comboLv(R.streak)?' glow'+comboLv(R.streak):'')+'">'+maru+
+    (q.done&&q.combo?'<div class="combo '+q.combo+'" role="status">'+COMBO_TXT[q.combo]+'</div>':'')+'<div class="qtop"><div class="qmain">'+
     '<div class="trow"><span class="tag" style="--tc:var(--c-'+it.type+');--tci:var(--ci-'+it.type+')">'+(R.key==='review'?'復習　':'')+TYPES[it.type].name+'</span>'+
     '<span class="prog" aria-hidden="true">'+(R.i+1)+'/'+R.qs.length+'</span></div>'+
     bodyHTML(q,q.done)+'</div><div class="slot">'+stamp+'</div></div>'+mean+
@@ -1149,12 +1189,13 @@ function viewResult(){
   const up=r1>R.rank0?'<div class="up">称号が上がりました：'+RANKS[r1][1]+'</div>':'';
   const noteN=ITEMS.filter(inNote).length;
   const sb='<div class="sbtns"><button class="sb fill" data-a="start" data-t="'+(R.key==='review'?'all':R.key)+'">もう一度</button>'+(noteN?'<button class="sb" data-a="notebook">復習ノートへ行く</button>':'')+'</div>';
-  const pips=R.qs.map(x=>'<i class="'+(x.ok?'ok':'ng')+'"></i>').join('');
+  const pips=gauge(R.qs,-1,-1);
+  const nb=R.maxStreak>=2&&R.maxStreak>R.best0?'<span class="newbest">ベスト更新！</span>':'';
   return '<div class="qbar"><button class="back" data-a="home">ホームへ</button></div>'+
     '<section class="stage res"><h2 class="big">結果発表！</h2>'+
     '<div class="score"><b>'+R.score+'</b><span>／ '+n+' 問正解</span></div>'+
     '<div class="pips" aria-hidden="true">'+pips+'</div>'+
-    '<div class="pills"><span class="pill">獲得 <b>+'+R.xp+'</b> ポイント</span><span class="pill">称号 <b>'+RANKS[r1][1]+'</b></span></div>'+up+'</section>'+
+    '<div class="pills"><span class="pill">獲得 <b>+'+R.xp+'</b> ポイント</span><span class="pill">最大コンボ <b>'+R.maxStreak+'</b>'+nb+'</span><span class="pill">称号 <b>'+RANKS[r1][1]+'</b></span></div>'+up+'</section>'+
     newCardsSection(R)+(miss.length?'<section class="stage"><div class="sec"><h2>まちがえた語句　'+miss.length+'問</h2>'+sb+'</div>'+missRows(miss)+'</section>':
       '<div class="perfect">全問正解です！</div><section class="stage"><div class="sec"><h2>つぎは？</h2>'+sb+'</div></section>');
 }
