@@ -1139,22 +1139,19 @@ function missRows(list){
 }
 function viewResult(){
   const R=state.round,n=R.qs.length,p=R.score/n;
-  const msg=p>=0.9?'ほぼ完ぺきです。':p>=0.7?'いい調子です。':p>=0.5?'あと一歩です。まちがえた語句を見直しましょう。':'ここからが伸びどころです。まちがえた語句を、もう一度やってみましょう。';
   const miss=R.qs.filter(q=>!q.ok).map(q=>q.it);
   const r1=rankOf(store.xp);
   const up=r1>R.rank0?'<div class="up">称号が上がりました：'+RANKS[r1][1]+'</div>':'';
   const noteN=ITEMS.filter(inNote).length;
+  const btns='<div class="row"><button class="btn fill" data-a="start" data-t="'+(R.key==='review'?'all':R.key)+'">もう一度</button>'+(noteN?'<button class="btn" data-a="review">復習ノートをやる（'+noteN+'問）</button>':'')+'</div>';
   const pips=R.qs.map(x=>'<i class="'+(x.ok?'ok':'ng')+'"></i>').join('');
   return '<div class="qbar"><button class="back" data-a="home">ホームへ</button></div>'+
     '<section class="stage res"><h2 class="big">結果発表！</h2>'+
     '<div class="score"><b>'+R.score+'</b><span>／ '+n+' 問正解</span></div>'+
     '<div class="pips" aria-hidden="true">'+pips+'</div>'+
-    '<p class="msg">'+msg+'</p>'+
     '<div class="pills"><span class="pill">獲得 <b>+'+R.xp+'</b> ポイント</span><span class="pill">称号 <b>'+RANKS[r1][1]+'</b></span></div>'+up+'</section>'+
-    newCardsSection(R)+(miss.length?'<section class="stage"><div class="sec"><h2>まちがえた語句　'+miss.length+'問</h2><small>復習ノートに入りました</small></div>'+missRows(miss)+'</section>':
-      '<div class="perfect">全問正解です！</div>')+
-    '<div class="row"><button class="btn fill" data-a="start" data-t="'+(R.key==='review'?'all':R.key)+'">もう一度</button>'+
-    (noteN?'<button class="btn" data-a="review">復習ノートをやる（'+noteN+'問）</button>':'')+'</div>';
+    newCardsSection(R)+(miss.length?'<section class="stage"><div class="sec"><h2>まちがえた語句　'+miss.length+'問</h2></div>'+missRows(miss)+btns+'</section>':
+      '<div class="perfect">全問正解です！</div>'+btns);
 }
 function viewNotebook(){
   const list=ITEMS.filter(inNote);
