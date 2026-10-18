@@ -1061,7 +1061,7 @@ function startRound(key){
 }
 /* コンボ演出: 連続正解数 → [表示, 段階] */
 const COMBO={3:'c3',5:'c5',8:'c8',10:'c10'};
-const COMBO_TXT={c3:'3連続！',c5:'すごい！',c8:'8連続！',c10:'SUPER！'};
+const COMBO_TXT={c3:'3連続！',c5:'すごい！',c8:'8連続！！',c10:'SUPER！！'};
 function comboLv(n){return n>=10?10:n>=8?8:n>=5?5:0;}
 /* ゲージ: 正解の丸は点灯、直前も正解なら線でつなぐ */
 function gauge(qs,cur,litIdx){
@@ -1197,7 +1197,7 @@ function viewResult(){
     '<div class="pips" aria-hidden="true">'+pips+'</div>'+
     '<div class="pills"><span class="pill">獲得 <b>+'+R.xp+'</b> ポイント</span><span class="pill">最大コンボ <b>'+R.maxStreak+'</b>'+nb+'</span><span class="pill">称号 <b>'+RANKS[r1][1]+'</b></span></div>'+up+'</section>'+
     newCardsSection(R)+(miss.length?'<section class="stage"><div class="sec"><h2>まちがえた語句　'+miss.length+'問</h2>'+sb+'</div>'+missRows(miss)+'</section>':
-      '<div class="perfect">全問正解です！</div><section class="stage"><div class="sec"><h2>つぎは？</h2>'+sb+'</div></section>');
+      '<div class="perfect">パーフェクト！！</div><section class="stage"><div class="sec"><h2>つぎは？</h2>'+sb+'</div></section>');
 }
 function viewNotebook(){
   const list=ITEMS.filter(inNote);
