@@ -65,12 +65,21 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 /* ホーム: 見出し */
 /* 見出し: 入試カウントは右上、タイトルは中央 */
 .hero{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
-.badge{position:absolute;top:0;right:0;display:inline-flex;align-items:baseline;gap:8px;background:#fff;border:2.5px solid #ff9a4d;color:#a8480f;font-weight:700;font-size:13px;border-radius:999px;padding:2px 16px}
+.bwrap{position:absolute;top:0;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.ver{font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.04em;margin-right:8px}
+.badge{display:inline-flex;align-items:baseline;gap:8px;background:#fff;border:2.5px solid #ff9a4d;color:#a8480f;font-weight:700;font-size:13px;border-radius:999px;padding:2px 16px}
 .badge b{font-size:18px;color:var(--accent);font-weight:800}
 .title{margin:0;font-family:'Trajan Pro','Trajan Pro 3',Trajan,'Cinzel','Times New Roman',Times,serif;font-size:clamp(28px,6vw,50px);font-weight:800;line-height:1.15;letter-spacing:.04em}
 .lead{margin:0;font-weight:700;color:var(--ink2);font-size:clamp(13px,2.4vw,17px);letter-spacing:.06em}
 
-.status{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.status{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:12px}
+.panel.zk{flex-direction:row;align-items:center;gap:10px;padding:8px 14px}
+.zk .fz{flex:none;width:52px}
+.zk .zt{min-width:0;flex:1}
+.zk .zn{font-size:14px;font-weight:700;color:var(--ink)}
+.zk .zc b{font-size:22px;color:var(--accent)}
+.zk .zc small{font-size:12px;color:var(--ink2);font-weight:700}
+.zk .bar{margin-top:3px}
 .panel{background:#fff;border-radius:16px;padding:8px 16px;min-width:0;box-shadow:0 4px 18px rgba(120,90,30,.1);display:flex;flex-direction:column;gap:2px}
 .l1{display:flex;align-items:baseline;gap:12px}
 .l2{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -233,7 +242,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
   .tools .ghost{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
   .tools .ghost .gl{flex-direction:column;align-items:flex-start;gap:4px}
   .tools .ghost small{display:none}
-  .badge{position:static;align-self:flex-end;margin-bottom:4px}
+  .bwrap{position:static;align-self:flex-end;margin-bottom:4px}
   .card .nm{font-size:16px}
   .card .ic{font-size:32px}
   .card .hd{gap:6px}
@@ -514,6 +523,24 @@ const NOTE_ICON='<svg class="nicon" viewBox="0 0 64 48" aria-hidden="true">'+
   '<path d="M37 18 Q45 15 54 18 M37 24 Q45 21 54 24 M37 30 Q45 27 54 30" stroke="#e7c79a" stroke-width="2" stroke-linecap="round" fill="none"/>'+
   '<path d="M38 36 L42 40 L52 31" stroke="#e0392d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'+
   '<path d="M32 11 L32 42" stroke="#d9a066" stroke-width="2"/></svg>';
+const PCOL=['#b7774a','#9aa4b2','#4aa3e8','#8a5fd0','#f2b134','#e8590c'];
+function petInner(st){
+  const line='#7a4a12',body=st===6?'#ffcf33':'#ffb347';
+  let s='';
+  if(st>=6)s+='<circle cx="50" cy="52" r="46" fill="#fff0a8" opacity=".75"/><g fill="#ffd54a"><path d="M50 2l4 10h-8zM92 28l-9 6 2-8zM8 28l9 6-2-8z"/></g>';
+  if(st===1)return s+'<ellipse cx="50" cy="56" rx="28" ry="34" fill="#fff6e3" stroke="'+line+'" stroke-width="3"/><path d="M30 52l8 8 7-9 8 9 7-8 8 8" fill="none" stroke="'+line+'" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="40" cy="38" r="3" fill="#ffd9a0"/><circle cx="62" cy="34" r="3" fill="#ffd9a0"/>';
+  if(st>=3){const w=st>=4?1.25:1;s+='<g fill="#ff8a3d" stroke="'+line+'" stroke-width="2.5" stroke-linejoin="round"><path d="M22 54Q'+(6/w)+' 40 8 '+(30-(w-1)*20)+'Q24 36 30 46Z"/><path d="M78 54Q94 40 92 '+(30-(w-1)*20)+'Q76 36 70 46Z"/></g>';}
+  if(st>=4)s+='<path d="M34 24l-4-14 12 9zM66 24l4-14-12 9z" fill="#fff" stroke="'+line+'" stroke-width="2.5" stroke-linejoin="round"/>';
+  s+='<ellipse cx="50" cy="58" rx="30" ry="29" fill="'+body+'" stroke="'+line+'" stroke-width="3"/><ellipse cx="50" cy="68" rx="18" ry="16" fill="#fff2cc"/>';
+  s+='<circle cx="40" cy="52" r="4.2" fill="'+line+'"/><circle cx="60" cy="52" r="4.2" fill="'+line+'"/><circle cx="41.5" cy="50.5" r="1.4" fill="#fff"/><circle cx="61.5" cy="50.5" r="1.4" fill="#fff"/><path d="M43 61Q50 67 57 61" stroke="'+line+'" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  if(st===2)s+='<path d="M24 42Q50 4 76 42L70 46Q50 34 30 46Z" fill="#fff6e3" stroke="'+line+'" stroke-width="3" stroke-linejoin="round"/><path d="M30 46l6 6 6-7 8 7 8-7 6 7 6-6" fill="none" stroke="'+line+'" stroke-width="2.5" stroke-linejoin="round"/>';
+  if(st>=5)s+='<path d="M30 80Q50 92 70 80L66 90Q50 98 34 90Z" fill="#e0392d" stroke="'+line+'" stroke-width="2.5" stroke-linejoin="round"/><path d="M76 58l10 3v10q0 8-10 12-10-4-10-12V61z" fill="#5a9cf5" stroke="'+line+'" stroke-width="2.5" stroke-linejoin="round"/>';
+  if(st>=6)s+='<path d="M30 28l6 10 8-12 6 12 6-12 8 12 6-10-3 16H33z" fill="#ffe27a" stroke="'+line+'" stroke-width="2.5" stroke-linejoin="round"/>';
+  return s;
+}
+function zukanIcon(st){
+  return '<svg class="fz" viewBox="0 0 80 88" aria-hidden="true"><path d="M40 3l30 11v26c0 21-13 35-30 42C23 75 10 61 10 40V14z" fill="'+PCOL[st-1]+'" stroke="#4a3a22" stroke-width="3.5" stroke-linejoin="round"/><path d="M40 3l30 11v26c0 21-13 35-30 42z" fill="#fff" opacity=".16"/><path d="M17 20l23-8 23 8v20c0 16-9 28-23 34-14-6-23-18-23-34z" fill="#fff6e3" opacity=".96"/><g transform="translate(17 17) scale(.46)">'+petInner(st)+'</g></svg>';
+}
 const ORDER=['k','g','t','w','b','y'];
 
 const ITEMS=[];
@@ -672,11 +699,12 @@ function viewHome(){
       '<span class="mm"><span class="bar"><i style="width:'+Math.round(m/pool.length*100)+'%"></i></span>覚えた '+m+' / '+pool.length+'</span></button>';
   }).join('');
   const allM=ITEMS.filter(mastered).length;
-  return '<header class="hero"><span class="badge">'+badge+'</span><h1 class="title">Wild Word World</h1>'+
+  return '<header class="hero"><div class="bwrap"><span class="badge">'+badge+'</span><span class="ver">v1.0</span></div><h1 class="title">Wild Word World</h1>'+
       '<p class="lead">〜'+best+'を目指そう〜</p></header>'+
     '<section class="status">'+
       '<div class="panel"><div class="l1"><small>称号</small><b>'+RANKS[r][1]+'</b></div>'+
       '<div class="l2"><span class="bar"><i style="width:'+pct+'%"></i></span><small>'+(nx?'次の称号まで あと '+(nx[0]-store.xp)+' ポイント':'最高の称号です')+'</small></div></div>'+
+      '<div class="panel zk">'+zukanIcon(r+1)+'<div class="zt"><div class="zn">ことば図鑑</div><div class="zc"><b>'+allM+'</b><small> / '+ITEMS.length+'</small></div><span class="bar"><i style="width:'+Math.round(allM/ITEMS.length*100)+'%"></i></span></div></div>'+
     '</section>'+
     '<section class="stage"><div class="cards">'+cards+'</div>'+
     '<button class="primary" data-a="start" data-t="all"><span>全分野に挑戦！</span><span aria-hidden="true">→</span></button>'+
