@@ -30,7 +30,7 @@
   --miss:var(--ok);
   --ok:#14966a;
   --ok-soft:#e5f6ee;
-  --c-k:#ffbdbd;--c-y:#ffddb3;--c-w:#beeaa4;--c-b:#cec4e9;--c-t:#b8e0f0;--c-g:#fdfbce;
+  --c-k:#ffbdbd;--c-y:#ffddb3;--c-w:#beeaa4;--c-b:#fdfbce;--c-t:#b8e0f0;--c-g:#cec4e9;
   --ci-k:#4a3438;--ci-y:#4a3438;--ci-w:#4a3438;--ci-b:#4a3438;--ci-t:#4a3438;--ci-g:#4a3438;
   --f-ui:"Hiragino Sans","Hiragino Kaku Gothic ProN","ヒラギノ角ゴ ProN","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
   --f-disp:var(--f-ui);
@@ -107,10 +107,10 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .card:hover{transform:translateY(-3px)}
 .card:active{transform:scale(.98)}
 .g-k{--ci:var(--ci-k);background:linear-gradient(145deg,#ffd6d6,#ffbdbd)}
-.g-g{--ci:var(--ci-g);background:linear-gradient(145deg,#fffde0,#f8f3b0)}
+.g-g{--ci:var(--ci-g);background:linear-gradient(145deg,#ddd6f2,#c4b8e6)}
 .g-t{--ci:var(--ci-t);background:linear-gradient(145deg,#cdeaf6,#a8d8ec)}
 .g-w{--ci:var(--ci-w);background:linear-gradient(145deg,#d3f1bf,#b3e394)}
-.g-b{--ci:var(--ci-b);background:linear-gradient(145deg,#ddd6f2,#c4b8e6)}
+.g-b{--ci:var(--ci-b);background:linear-gradient(145deg,#fffde0,#f8f3b0)}
 .g-y{--ci:var(--ci-y);background:linear-gradient(145deg,#ffe9cf,#ffd9a8)}
 .fic{width:.95em;height:.95em;display:block}
 .card .ic{font-size:40px;line-height:1.1;flex:none}
@@ -1168,7 +1168,7 @@ function viewNotebook(){
 }
 
 /* ===== ことば図鑑 ===== */
-const ZC={k:'#ffbdbd',y:'#ffddb3',w:'#beeaa4',b:'#cec4e9',t:'#b8e0f0',g:'#f6f0a8'};
+const ZC={k:'#ffbdbd',y:'#ffddb3',w:'#beeaa4',b:'#f6f0a8',t:'#b8e0f0',g:'#cec4e9'};
 const ZI={k:'#4a3438',y:'#4a3438',w:'#4a3438',b:'#4a3438',t:'#4a3438',g:'#4a3438'};
 const SPCOL=['#beeaa4','#b8e0f0','#cec4e9','#ffbdbd','#ffddb3','#f8ee8c'];
 const itemAt=id=>{for(let i=0;i<ITEMS.length;i++)if(ITEMS[i].id===id)return ITEMS[i];return null;};
