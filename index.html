@@ -14,22 +14,23 @@
 :root{
   color-scheme:light;
   --bg:#ffffff;
-  --bg-top:#fff2cc;
-  --ink:#22304a;
-  --ink2:#66728a;
-  --line:#ece5d3;
+  --bg-top:#efe3ff;
+  --ink:#2a1b4d;
+  --ink2:#6f6192;
+  --line:#e6dcf7;
   --card:#ffffff;
-  --soft:#fff6e3;
-  --grid:#f0bd82;
-  --accent:#e8590c;
-  --accent2:#f98a3a;
+  --soft:#f6f0ff;
+  --grid:#cdb4f5;
+  --accent:#8f4df9;
+  --accent2:#f967bc;
   --accent-ink:#ffffff;
-  --pen:#e0392d;
-  --pen-soft:#fdeceb;
+  --pen:#e5266f;
+  --pen-soft:#ffe6f2;
   --miss:var(--ok);
   --ok:#14966a;
   --ok-soft:#e5f6ee;
-  --c-k:#d9561a;--c-g:#2766d1;--c-t:#6f43c0;--c-w:#13875f;--c-b:#d33a77;--c-y:#b86e00;
+  --c-k:#f967bc;--c-w:#a6dc5b;--c-y:#8f4df9;--c-t:#fbce74;--c-b:#45d4e6;--c-g:#f5e475;
+  --ci-k:#2a1b4d;--ci-w:#2a1b4d;--ci-y:#fff;--ci-t:#2a1b4d;--ci-b:#2a1b4d;--ci-g:#2a1b4d;
   --f-ui:"Hiragino Sans","Hiragino Kaku Gothic ProN","ヒラギノ角ゴ ProN","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
   --f-disp:var(--f-ui);
   --cs:clamp(40px,9.5vw,60px);
@@ -46,7 +47,7 @@ body{
   padding-block:20px 56px;
 }
 button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
-button:focus-visible{outline:3px solid #2766d1;outline-offset:2px}
+button:focus-visible{outline:3px solid #8f4df9;outline-offset:2px}
 #app{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
 small{font-size:12px;color:var(--ink2);letter-spacing:.04em}
 h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2)}
@@ -67,7 +68,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .hero{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
 .bwrap{position:absolute;top:0;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 .ver{font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.04em;margin-right:8px}
-.badge{display:inline-flex;align-items:baseline;gap:8px;background:#fff;border:2.5px solid #ff9a4d;color:#a8480f;font-weight:700;font-size:13px;border-radius:999px;padding:2px 16px}
+.badge{display:inline-flex;align-items:baseline;gap:8px;background:#fff;border:2.5px solid #c9a4ff;color:#5b2bb8;font-weight:700;font-size:13px;border-radius:999px;padding:2px 16px}
 .badge b{font-size:18px;color:var(--accent);font-weight:800}
 .title{margin:0;font-family:'Trajan Pro','Trajan Pro 3',Trajan,'Cinzel','Times New Roman',Times,serif;font-size:clamp(28px,6vw,50px);font-weight:800;line-height:1.15;letter-spacing:.04em}
 .lead{margin:0;font-weight:700;color:var(--ink2);font-size:clamp(13px,2.4vw,17px);letter-spacing:.06em}
@@ -80,50 +81,50 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .zk .zc b{font-size:22px;color:var(--accent)}
 .zk .zc small{font-size:12px;color:var(--ink2);font-weight:700}
 .zk .bar{margin-top:3px}
-.panel{background:#fff;border-radius:16px;padding:8px 16px;min-width:0;box-shadow:0 4px 18px rgba(120,90,30,.1);display:flex;flex-direction:column;gap:2px}
+.panel{background:#fff;border-radius:16px;padding:8px 16px;min-width:0;box-shadow:0 4px 18px rgba(110,60,200,.12);display:flex;flex-direction:column;gap:2px}
 .l1{display:flex;align-items:baseline;gap:12px}
 .l2{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .l2 .bar{flex:1 1 90px;margin:0}
 .panel b{font-size:20px;font-weight:800;line-height:1.4}
-.bar{display:block;height:8px;background:#f1ead9;border-radius:4px;overflow:hidden;margin:8px 0 4px}
+.bar{display:block;height:8px;background:#ece3fa;border-radius:4px;overflow:hidden;margin:8px 0 4px}
 .bar i{display:block;height:100%;background:var(--accent2);border-radius:4px}
 
-.stage{background:#fff;border-radius:26px;padding:clamp(14px,3vw,24px);box-shadow:0 10px 36px rgba(120,90,30,.14);display:flex;flex-direction:column;gap:16px}
+.stage{background:#fff;border-radius:26px;padding:clamp(14px,3vw,24px);box-shadow:0 10px 36px rgba(110,60,200,.16);display:flex;flex-direction:column;gap:16px}
 .stage h2.big{text-align:center;font-size:clamp(20px,3.6vw,28px);font-weight:800;color:var(--ink);letter-spacing:.02em}
 .lab{font-size:14px;font-weight:700;color:var(--ink2);margin:0 0 8px}
 .seg{display:flex;gap:10px}
 .seg button{flex:1;min-height:50px;border:2px solid var(--line);background:#fff;border-radius:14px;font-weight:700}
-.seg button[aria-pressed="true"]{background:#fff1df;color:#a8480f;border-color:#ff9a4d}
+.seg button[aria-pressed="true"]{background:#f1e6ff;color:#5b2bb8;border-color:#c9a4ff}
 
 .cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
 .card{
   grid-column:span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;
-  color:#fff;border:0;border-radius:20px;padding:14px 14px 12px;
+  color:var(--ci);border:0;border-radius:20px;padding:14px 14px 12px;
   box-shadow:0 8px 18px rgba(30,30,60,.16);transition:transform .15s ease;
 }
 .card .hd{display:flex;align-items:center;justify-content:center;gap:10px;flex:1}
 .card:hover{transform:translateY(-3px)}
 .card:active{transform:scale(.98)}
-.g-k{background:linear-gradient(145deg,#ffa04d,#ee6420)}
-.g-g{background:linear-gradient(145deg,#5a9cf5,#2766d1)}
-.g-t{background:linear-gradient(145deg,#a67be2,#6f43c0)}
-.g-w{background:linear-gradient(145deg,#3cc593,#13875f)}
-.g-b{background:linear-gradient(145deg,#f77aa6,#d33a77)}
-.g-y{background:linear-gradient(145deg,#f2b134,#cf7f0a)}
+.g-k{--ci:var(--ci-k);background:linear-gradient(145deg,#ff93d3,#f967bc)}
+.g-g{--ci:var(--ci-g);background:linear-gradient(145deg,#faf0a2,#f2de63)}
+.g-t{--ci:var(--ci-t);background:linear-gradient(145deg,#fddc9d,#fbce74)}
+.g-w{--ci:var(--ci-w);background:linear-gradient(145deg,#c3ec85,#a6dc5b)}
+.g-b{--ci:var(--ci-b);background:linear-gradient(145deg,#86e6f2,#3cc9de)}
+.g-y{--ci:var(--ci-y);background:linear-gradient(145deg,#a778fb,#8f4df9)}
 .fic{width:.95em;height:.95em;display:block}
 .card .ic{font-size:40px;line-height:1.1;flex:none}
 .card .nm{font-size:20px;font-weight:800;line-height:1.35;text-align:left}
 .card .mm{width:100%;display:block;font-size:12px;font-weight:700}
-.card .bar{background:rgba(255,255,255,.35);margin:0 0 4px}
-.card .bar i{background:#fff}
+.card .bar{background:rgba(42,27,77,.16);margin:0 0 4px}
+.card .bar i{background:currentColor}
 
 .primary{
   background:linear-gradient(135deg,var(--accent2),var(--accent));color:var(--accent-ink);border:0;border-radius:18px;padding:16px 22px;
   font-weight:800;font-size:19px;min-height:56px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;
-  box-shadow:0 6px 14px rgba(232,89,12,.28);
+  box-shadow:0 6px 14px rgba(143,77,249,.32);
 }
 .ghost{
-  background:#fff;border:2px dashed #e7c79a;border-radius:18px;padding:14px 18px;min-height:64px;width:100%;
+  background:#fff;border:2px dashed #cdb4f5;border-radius:18px;padding:14px 18px;min-height:64px;width:100%;
   display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:700;text-align:left
 }
 .ghost:disabled{opacity:.55;cursor:default}
@@ -142,13 +143,13 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .qbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .back{border:2px solid var(--line);background:#fff;border-radius:14px;min-height:46px;padding:0 16px;font-weight:700}
 .pips{display:flex;gap:5px;flex:1;min-width:140px;flex-wrap:wrap}
-.pips i{width:20px;height:20px;border:2px solid #ead9b8;background:#fff;display:block;border-radius:6px}
+.pips i{width:20px;height:20px;border:2px solid #d9c8f5;background:#fff;display:block;border-radius:6px}
 .pips i.ok{background:var(--ok);border-color:var(--ok)}
 .pips i.ng{border-color:var(--pen);background:var(--pen-soft)}
 .pips i.now{border-color:var(--ink)}
 .chip{font-size:14px;font-weight:800;color:var(--accent)}
-.qcard{position:relative;background:#fff;border-radius:26px;padding:clamp(18px,3.4vw,28px);display:flex;flex-direction:column;gap:16px;box-shadow:0 10px 36px rgba(120,90,30,.14)}
-.tag{align-self:flex-start;font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--tc,var(--accent));border:2px solid var(--tc,var(--accent));border-radius:999px;padding:0 12px;background:#fff}
+.qcard{position:relative;background:#fff;border-radius:26px;padding:clamp(18px,3.4vw,28px);display:flex;flex-direction:column;gap:16px;box-shadow:0 10px 36px rgba(110,60,200,.16)}
+.tag{align-self:flex-start;font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--tci,#fff);border:2px solid var(--tc,var(--accent));border-radius:999px;padding:0 12px;background:var(--tc,var(--accent))}
 .ins{margin:0;color:var(--ink2);font-size:14px;line-height:1.6}
 .body{font-weight:800;font-size:clamp(22px,4.6vw,30px);line-height:1.7;margin:0;text-wrap:balance}
 .qs{font-size:.62em;font-weight:700;color:var(--ink2)}
@@ -164,10 +165,10 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
   position:relative;display:flex;align-items:center;gap:12px;min-height:66px;padding:10px 16px;text-align:left;
   background:#fff;border:2px solid var(--line);border-radius:16px;color:var(--ink);line-height:1.5;font-weight:500;
 }
-.choice:not(:disabled):hover{border-color:#ffa766}
+.choice:not(:disabled):hover{border-color:#c9a4ff}
 .choice:not(:disabled):active{transform:scale(.99)}
 .choice:disabled{cursor:default;color:var(--ink)}
-.choice .mk{flex:none;width:32px;height:32px;border:2px solid #ead9b8;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--ink2)}
+.choice .mk{flex:none;width:32px;height:32px;border:2px solid #d9c8f5;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--ink2)}
 .choice .tx{min-width:0;overflow-wrap:anywhere}
 .choices.two .choice .tx{font-weight:800;font-size:24px}
 .choice.dim{opacity:.5}
@@ -183,7 +184,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .fb p{margin:0}
 .fb .done{font-weight:800;font-size:20px}
 .fb .ex{color:var(--ink);font-size:15px}
-.next{align-self:flex-end;min-width:210px;min-height:58px;border:0;border-radius:16px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:var(--accent-ink);font-weight:800;font-size:18px;padding:0 26px;box-shadow:0 6px 14px rgba(232,89,12,.28)}
+.next{align-self:flex-end;min-width:210px;min-height:58px;border:0;border-radius:16px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:var(--accent-ink);font-weight:800;font-size:18px;padding:0 26px;box-shadow:0 6px 14px rgba(143,77,249,.32)}
 
 /* 結果・復習ノート */
 .res{align-items:center;text-align:center;gap:14px}
@@ -195,11 +196,11 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .pill{display:inline-flex;align-items:baseline;gap:6px;background:var(--soft);border-radius:999px;padding:2px 16px;font-weight:700;font-size:14px}
 .pill b{color:var(--accent);font-size:18px;font-weight:800}
-.up{width:100%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border-radius:18px;padding:12px 16px;font-weight:800;font-size:18px;box-shadow:0 6px 14px rgba(232,89,12,.28)}
+.up{width:100%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border-radius:18px;padding:12px 16px;font-weight:800;font-size:18px;box-shadow:0 6px 14px rgba(143,77,249,.32)}
 .perfect{background:linear-gradient(145deg,#27a577,#0f7a56);color:#fff;border-radius:22px;padding:18px;text-align:center;font-weight:900;font-size:24px;box-shadow:0 8px 18px rgba(30,30,60,.16)}
 .sbtns{display:flex;gap:8px;flex-wrap:wrap}
 .sb{min-height:44px;padding:0 16px;border-radius:14px;border:2px solid var(--ink);background:#fff;font-weight:800;font-size:15px;color:var(--ink)}
-.sb.fill{background:linear-gradient(135deg,var(--accent2),var(--accent));border:0;color:var(--accent-ink);box-shadow:0 4px 10px rgba(232,89,12,.28)}
+.sb.fill{background:linear-gradient(135deg,var(--accent2),var(--accent));border:0;color:var(--accent-ink);box-shadow:0 4px 10px rgba(143,77,249,.32)}
 .sec{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .sec h2{font-size:clamp(18px,3.2vw,22px);font-weight:800;color:var(--ink)}
 .list{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
@@ -213,10 +214,10 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .row{display:flex;gap:12px;flex-wrap:wrap}
 .row>button{flex:1 1 200px}
 .btn{min-height:58px;border-radius:18px;font-weight:800;font-size:17px;border:2px solid var(--ink);background:#fff;padding:0 20px}
-.btn.fill{background:linear-gradient(135deg,var(--accent2),var(--accent));border:0;color:var(--accent-ink);box-shadow:0 6px 14px rgba(232,89,12,.28)}
+.btn.fill{background:linear-gradient(135deg,var(--accent2),var(--accent));border:0;color:var(--accent-ink);box-shadow:0 6px 14px rgba(143,77,249,.32)}
 .sticky{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:6}
 .hero.sm .title{font-size:clamp(26px,5.6vw,40px)}
-.empty{color:var(--ink);padding:28px 20px;text-align:center;border:2px dashed #e7c79a;border-radius:22px;background:#fff;font-weight:700;line-height:1.8}
+.empty{color:var(--ink);padding:28px 20px;text-align:center;border:2px dashed #cdb4f5;border-radius:22px;background:#fff;font-weight:700;line-height:1.8}
 
 /* 問題カードの上段: 左に分野と本文、右に〇・おしい！ */
 .qtop{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
@@ -246,34 +247,34 @@ button.panel.zk{border:0;width:100%;font:inherit;text-align:left;cursor:pointer;
 .ztot b{font-size:32px;color:var(--accent);font-weight:900}
 .ztot span{font-size:13px;font-weight:700;color:var(--ink2)}
 .wall{display:grid;grid-template-columns:repeat(50,minmax(0,1fr));gap:2px}
-.wall i{display:block;aspect-ratio:1;border-radius:2px;background:#ece6d8}
-.rank{margin-top:14px;padding-top:10px;border-top:2px dashed #eee3cc}
+.wall i{display:block;aspect-ratio:1;border-radius:2px;background:#e9e0f7}
+.rank{margin-top:14px;padding-top:10px;border-top:2px dashed #e6dcf7}
 .rk-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px;font-weight:800;color:var(--ink2);margin-bottom:6px}
 .rk-h b{color:var(--ink);font-size:15px}
 .track{position:relative;height:78px}
-.tl{position:absolute;left:4%;right:4%;top:22px;height:10px;border-radius:6px;background:#ece6d8}
-.tf{position:absolute;left:4%;top:22px;height:10px;border-radius:6px;background:linear-gradient(90deg,#f98a3a,#e8590c)}
+.tl{position:absolute;left:4%;right:4%;top:22px;height:10px;border-radius:6px;background:#e9e0f7}
+.tf{position:absolute;left:4%;top:22px;height:10px;border-radius:6px;background:linear-gradient(90deg,#f967bc,#8f4df9)}
 .sh{position:absolute;top:0;width:13%;transform:translateX(-50%);text-align:center}
 .sh svg{width:100%;max-width:44px;display:block;margin:0 auto}
 .sh small{display:block;font-size:10px;font-weight:800;margin-top:2px;white-space:nowrap}
-.sh.off small{color:#b9b2a0}
+.sh.off small{color:#b3a8cc}
 .you{position:absolute;top:17px;width:20px;height:20px;border-radius:50%;background:#fff;border:4px solid var(--accent);transform:translateX(-50%);box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .ztabs{display:flex;gap:6px;margin-bottom:12px}
-.ztab{flex:1;min-width:0;border:2px solid #eee3cc;background:#fff;border-radius:12px;padding:9px 2px;font-size:12px;font-weight:800;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:clip}
-.ztab.on{background:var(--c);border-color:var(--c);color:#fff}
+.ztab{flex:1;min-width:0;border:2px solid #e6dcf7;background:#fff;border-radius:12px;padding:9px 2px;font-size:12px;font-weight:800;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:clip}
+.ztab.on{background:var(--c);border-color:var(--c);color:var(--ci)}
 .zgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
 .zc2{position:relative;display:flex;flex-direction:column;align-items:stretch;padding:0;aspect-ratio:1/1;border:3px solid var(--c);border-radius:12px;background:#fff;overflow:hidden;box-shadow:0 3px 8px rgba(0,0,0,.12);font:inherit;color:var(--ink);width:100%}
-.zt2{display:flex;align-items:center;justify-content:center;height:26%;background:var(--c);color:#fff;font-size:11px;font-weight:800;letter-spacing:1px}
+.zt2{display:flex;align-items:center;justify-content:center;height:26%;background:var(--c);color:var(--ci);font-size:11px;font-weight:800;letter-spacing:1px}
 .cw{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:900;line-height:1.25;padding:3px 4px;word-break:break-all}
 .cw small.cs{font-size:9px;font-weight:700;color:var(--ink2);margin-top:2px;line-height:1.2}
 .cw .yomi{font-size:.55em;display:block}
-.zc2.lock{border-color:#d9d3c4;background:#ece6d8;box-shadow:none}
-.zc2.lock .zt2{background:#d9d3c4}
-.zc2.lock .cw{color:#b9b2a0;font-size:26px}
+.zc2.lock{border-color:#d8d0e8;background:#e9e0f7;box-shadow:none}
+.zc2.lock .zt2{background:#d8d0e8}
+.zc2.lock .cw{color:#b3a8cc;font-size:26px}
 .znew{position:absolute;left:-2px;top:30%;background:var(--pen);color:#fff;font-size:9px;font-weight:900;padding:1px 6px;border-radius:0 6px 6px 0}
 .zmodal{position:fixed;inset:0;z-index:50;background:rgba(20,30,50,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px}
 .zbig{width:min(300px,86vw);background:#fff;border:4px solid var(--c);border-radius:20px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.3);animation:pop .3s ease-out}
-.ztop{display:flex;justify-content:space-between;background:var(--c);color:#fff;padding:8px 14px;font-weight:800;font-size:14px}
+.ztop{display:flex;justify-content:space-between;background:var(--c);color:var(--ci);padding:8px 14px;font-weight:800;font-size:14px}
 .zttl{padding:16px 12px 4px;text-align:center;font-size:24px;font-weight:900;line-height:1.35}
 .zttl .yomi{display:block;font-size:.5em}
 .zbody{padding:4px 18px 18px;font-size:14px;line-height:1.7;font-weight:700}
@@ -876,21 +877,21 @@ const SYN=[['異口同音','満場一致'],['十人十色','千差万別'],['自
 
 const TYPES={
   k:{name:'ことわざ・慣用句',sub:'□に漢字一字を入れる',ic:'🍡'},
-  g:{name:'敬語',sub:'尊敬語・謙譲語・丁寧語',ic:'<svg class="fic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#ffd43b"/><path d="M13 21 Q17 15.5 21 21 M27 21 Q31 15.5 35 21" stroke="#5a3a12" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M13 29 Q24 41 35 29" stroke="#5a3a12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>'},
+  g:{name:'敬語',sub:'尊敬語・謙譲語・丁寧語',ic:'<svg class="fic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#fff"/><path d="M13 21 Q17 15.5 21 21 M27 21 Q31 15.5 35 21" stroke="#5a3a12" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M13 29 Q24 41 35 29" stroke="#5a3a12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>'},
   t:{name:'多義語',sub:'文の中での意味を選ぶ',ic:'🔍'},
   w:{name:'語句・外来語',sub:'カタカナ語の意味',ic:'🌏'},
   b:{name:'文学',sub:'作品と作者の組み合わせ',ic:'📖'},
   y:{name:'四字熟語',sub:'意味にあう四字熟語',ic:'✏️'}
 };
 const NOTE_ICON='<svg class="nicon" viewBox="0 0 64 48" aria-hidden="true">'+
-  '<rect x="2" y="6" width="60" height="38" rx="5" fill="#f98a3a"/>'+
+  '<rect x="2" y="6" width="60" height="38" rx="5" fill="#8f4df9"/>'+
   '<path d="M6 10 Q19 6 31 11 L31 42 Q19 37 6 41 Z" fill="#fff"/>'+
   '<path d="M58 10 Q45 6 33 11 L33 42 Q45 37 58 41 Z" fill="#fff"/>'+
-  '<path d="M10 18 Q19 15 27 18 M10 24 Q19 21 27 24 M10 30 Q19 27 27 30 M10 36 Q19 33 27 36" stroke="#e7c79a" stroke-width="2" stroke-linecap="round" fill="none"/>'+
-  '<path d="M37 18 Q45 15 54 18 M37 24 Q45 21 54 24 M37 30 Q45 27 54 30" stroke="#e7c79a" stroke-width="2" stroke-linecap="round" fill="none"/>'+
+  '<path d="M10 18 Q19 15 27 18 M10 24 Q19 21 27 24 M10 30 Q19 27 27 30 M10 36 Q19 33 27 36" stroke="#cdb4f5" stroke-width="2" stroke-linecap="round" fill="none"/>'+
+  '<path d="M37 18 Q45 15 54 18 M37 24 Q45 21 54 24 M37 30 Q45 27 54 30" stroke="#cdb4f5" stroke-width="2" stroke-linecap="round" fill="none"/>'+
   '<path d="M38 36 L42 40 L52 31" stroke="#e0392d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'+
   '<path d="M32 11 L32 42" stroke="#d9a066" stroke-width="2"/></svg>';
-const PCOL=['#b7774a','#9aa4b2','#4aa3e8','#8a5fd0','#f2b134','#e8590c'];
+const PCOL=['#a6dc5b','#45d4e6','#8f4df9','#f967bc','#fbce74','#f5e475'];
 function petInner(st){
   const line='#7a4a12',body=st===6?'#ffcf33':'#ffb347';
   let s='';
@@ -910,7 +911,7 @@ function zukanIcon(st){
 }
 const YOMI={'坊っちゃん':'ぼっちゃん','吾輩は猫である':'わがはいはねこである','羅生門':'らしょうもん','蜘蛛の糸':'くものいと','走れメロス':'はしれメロス','銀河鉄道の夜':'ぎんがてつどうのよる','注文の多い料理店':'ちゅうもんのおおいりょうりてん','手袋を買いに':'てぶくろをかいに','舞姫':'まいひめ','雪国':'ゆきぐに','みだれ髪':'みだれがみ','一握の砂':'いちあくのすな','源氏物語':'げんじものがたり','枕草子':'まくらのそうし','徒然草':'つれづれぐさ','方丈記':'ほうじょうき','おくのほそ道':'おくのほそみち','赤毛のアン':'あかげのアン','不思議の国のアリス':'ふしぎのくにのアリス','星の王子さま':'ほしのおうじさま','若草物語':'わかくさものがたり','トム・ソーヤーの冒険':'トム・ソーヤーのぼうけん','十五少年漂流記':'じゅうごしょうねんひょうりゅうき','夏目漱石':'なつめそうせき','芥川龍之介':'あくたがわりゅうのすけ','太宰治':'だざいおさむ','宮沢賢治':'みやざわけんじ','新美南吉':'にいみなんきち','森鷗外':'もりおうがい','川端康成':'かわばたやすなり','樋口一葉':'ひぐちいちよう','与謝野晶子':'よさのあきこ','石川啄木':'いしかわたくぼく','紫式部':'むらさきしきぶ','清少納言':'せいしょうなごん','兼好法師':'けんこうほうし','鴨長明':'かものちょうめい','松尾芭蕉':'まつおばしょう','山椒魚':'さんしょううお','伊豆の踊子':'いずのおどりこ','小僧の神様':'こぞうのかみさま','一房の葡萄':'ひとふさのぶどう','檸檬':'れもん','二十四の瞳':'にじゅうしのひとみ','野菊の墓':'のぎくのはか','蟹工船':'かにこうせん','智恵子抄':'ちえこしょう','高瀬舟':'たかせぶね','ビルマの竪琴':'ビルマのたてごと','土佐日記':'とさにっき','東海道中膝栗毛':'とうかいどうちゅうひざくりげ','雨月物語':'うげつものがたり','おらが春':'おらがはる','曽根崎心中':'そねざきしんじゅう','ガリバー旅行記':'ガリバーりょこうき','宝島':'たからじま','みにくいアヒルの子':'みにくいアヒルのこ','大草原の小さな家':'だいそうげんのちいさないえ','飛ぶ教室':'とぶきょうしつ','長くつ下のピッピ':'ながくつしたのピッピ','井伏鱒二':'いぶせますじ','志賀直哉':'しがなおや','有島武郎':'ありしまたけお','梶井基次郎':'かじいもとじろう','壺井栄':'つぼいさかえ','伊藤左千夫':'いとうさちお','小林多喜二':'こばやしたきじ','高村光太郎':'たかむらこうたろう','竹山道雄':'たけやまみちお','紀貫之':'きのつらゆき','十返舎一九':'じっぺんしゃいっく','上田秋成':'うえだあきなり','小林一茶':'こばやしいっさ','近松門左衛門':'ちかまつもんざえもん'};
 function yomi(t){return esc(t)+(YOMI[t]?'<small class="yomi">（'+esc(YOMI[t])+'）</small>':'');}
-const ORDER=['k','g','t','w','b','y'];
+const ORDER=['k','w','y','t','b','g'];
 
 const ITEMS=[];
 K.forEach(([q,a,d,m,e])=>ITEMS.push({id:'k|'+q,type:'k',q,a,d,m,e}));
@@ -1125,7 +1126,7 @@ function viewQuiz(){
   return '<div class="qbar"><button class="back" data-a="home">もどる</button><div class="pips" aria-label="'+(R.i+1)+'問目 / '+R.qs.length+'問">'+pips+'</div>'+
     (R.streak>=2?'<span class="chip">れんぞく '+R.streak+'</span>':'')+'</div>'+
     '<article class="qcard">'+maru+'<div class="qtop"><div class="qmain">'+
-    '<div class="trow"><span class="tag" style="--tc:var(--c-'+it.type+')">'+(R.key==='review'?'復習　':'')+TYPES[it.type].name+'</span>'+
+    '<div class="trow"><span class="tag" style="--tc:var(--c-'+it.type+');--tci:var(--ci-'+it.type+')">'+(R.key==='review'?'復習　':'')+TYPES[it.type].name+'</span>'+
     '<span class="prog" aria-hidden="true">'+(R.i+1)+'/'+R.qs.length+'</span></div>'+
     bodyHTML(q,q.done)+'</div><div class="slot">'+stamp+'</div></div>'+mean+
     '<div class="choices'+(two?' two':'')+'">'+ch+'</div>'+fb+'</article>';
@@ -1137,7 +1138,7 @@ function missRows(list){
     let q=it.type==='b'?'『'+yomi(it.t)+'』':esc(plainStem(it));
     if(it.type==='k'||blank)q=q.replace(/【(.*?)】/,'<b class="hl">$1</b>');
     const a=it.type==='k'?'<span class="a">意味：'+esc(it.m)+'</span>':blank?'':'<span class="a">正解：<b>'+(it.type==='b'?yomi(it.a):esc(it.a))+'</b></span>';
-    return '<li class="miss"><span class="tag" style="--tc:var(--c-'+it.type+')">'+TYPES[it.type].name+'</span><span class="q">'+q+'</span>'+a+'<span class="e">'+esc(it.e)+'</span></li>';
+    return '<li class="miss"><span class="tag" style="--tc:var(--c-'+it.type+');--tci:var(--ci-'+it.type+')">'+TYPES[it.type].name+'</span><span class="q">'+q+'</span>'+a+'<span class="e">'+esc(it.e)+'</span></li>';
   }).join('')+'</ul>';
 }
 function viewResult(){
@@ -1166,8 +1167,9 @@ function viewNotebook(){
 }
 
 /* ===== ことば図鑑 ===== */
-const ZC={k:'#ee6420',g:'#2766d1',t:'#6f43c0',w:'#13875f',b:'#d33a77',y:'#cf7f0a'};
-const SPCOL=['#b7774a','#9aa4b2','#4aa3e8','#8a5fd0','#f2b134','#e8590c'];
+const ZC={k:'#f967bc',w:'#a6dc5b',y:'#8f4df9',t:'#fbce74',b:'#45d4e6',g:'#f5e475'};
+const ZI={k:'#2a1b4d',w:'#2a1b4d',y:'#fff',t:'#2a1b4d',b:'#2a1b4d',g:'#2a1b4d'};
+const SPCOL=['#a6dc5b','#45d4e6','#8f4df9','#f967bc','#fbce74','#f5e475'];
 const itemAt=id=>{for(let i=0;i<ITEMS.length;i++)if(ITEMS[i].id===id)return ITEMS[i];return null;};
 const uline=t=>esc(t).replace('〔','<span class="u">').replace('〕','</span>');
 function cardFace(it){
@@ -1190,10 +1192,10 @@ function cardBack(it){
   else if(it.type==='w'){title=esc(it.w);body='<p>'+esc(it.a)+'</p>';}
   else if(it.type==='b'){title=yomi(it.t);body='<p><b>作者</b>　'+yomi(it.a)+'</p>';}
   else{title=esc(it.a);body='<p>'+esc(it.m)+'</p>';}
-  return '<div class="zbig" style="--c:'+ZC[it.type]+'"><div class="ztop"><span>'+esc(TYPES[it.type].name)+'</span><span>'+starsHTML(lvl(it))+'</span></div><div class="zttl">'+title+'</div><div class="zbody">'+body+'</div></div>';
+  return '<div class="zbig" style="--c:'+ZC[it.type]+';--ci:'+ZI[it.type]+'"><div class="ztop"><span>'+esc(TYPES[it.type].name)+'</span><span>'+starsHTML(lvl(it))+'</span></div><div class="zttl">'+title+'</div><div class="zbody">'+body+'</div></div>';
 }
 function zcard(it,extra){
-  return '<button class="zc2" style="--c:'+ZC[it.type]+'" data-a="zopen" data-i="'+ITEMS.indexOf(it)+'"><span class="zt2">'+starsHTML(lvl(it))+'</span>'+(extra||'')+cardFace(it)+'</button>';
+  return '<button class="zc2" style="--c:'+ZC[it.type]+';--ci:'+ZI[it.type]+'" data-a="zopen" data-i="'+ITEMS.indexOf(it)+'"><span class="zt2">'+starsHTML(lvl(it))+'</span>'+(extra||'')+cardFace(it)+'</button>';
 }
 function shieldSVG(i,on){
   const c=on?SPCOL[i]:'#c9ced8',d=on?'#4a3a22':'#9aa0ad';
@@ -1220,7 +1222,7 @@ function viewZukan(){
     wall+='<i'+(it?' style="background:'+ZC[it.type]+'"':'')+'></i>';
   }
   wall+='</div>';
-  const tabs='<div class="ztabs">'+ORDER.map(k=>'<button class="ztab'+(k===tab?' on':'')+'" style="--c:'+ZC[k]+'" data-a="ztab" data-t="'+k+'">'+TYPES[k].name+'</button>').join('')+'</div>';
+  const tabs='<div class="ztabs">'+ORDER.map(k=>'<button class="ztab'+(k===tab?' on':'')+'" style="--c:'+ZC[k]+';--ci:'+ZI[k]+'" data-a="ztab" data-t="'+k+'">'+TYPES[k].name+'</button>').join('')+'</div>';
   const mine=store.col.map(itemAt).filter(it=>it&&it.type===tab);
   const all=ITEMS.filter(i=>i.type===tab).length;
   let grid=mine.map(it=>zcard(it)).join('');
@@ -1235,7 +1237,7 @@ function newCardsSection(R){
   if(!R.newCards||!R.newCards.length)return '';
   return '<section class="stage"><div class="sec"><h2>あたらしく覚えた語　'+R.newCards.length+'語</h2><div class="sbtns"><button class="sb" data-a="zukan">ことば図鑑へ行く</button></div></div><div class="zgrid newg">'+
     R.newCards.map((it,i)=>'<div class="zwrap" style="animation-delay:'+(0.15+i*0.18)+'s"><span class="zspark" aria-hidden="true">✦</span>'+
-      '<div class="zc2" style="--c:'+ZC[it.type]+'"><span class="zt2">'+starsHTML(lvl(it))+'</span><span class="znew">NEW</span>'+cardFace(it)+'</div></div>').join('')+'</div></section>';
+      '<div class="zc2" style="--c:'+ZC[it.type]+';--ci:'+ZI[it.type]+'"><span class="zt2">'+starsHTML(lvl(it))+'</span><span class="znew">NEW</span>'+cardFace(it)+'</div></div>').join('')+'</div></section>';
 }
 
 function render(top){
