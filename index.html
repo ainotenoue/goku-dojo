@@ -8,7 +8,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 /* Layout: 明るい黄色のグラデーションの上に大きな白いパネル。分野ごとに色のちがう大きなカードを並べる。 */
 :root{
@@ -67,7 +67,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .hero{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
 .badge{position:absolute;top:0;right:0;display:inline-flex;align-items:baseline;gap:8px;background:#fff;border:2.5px solid #ff9a4d;color:#a8480f;font-weight:700;font-size:13px;border-radius:999px;padding:2px 16px}
 .badge b{font-size:18px;color:var(--accent);font-weight:800}
-.title{margin:0;font-size:clamp(30px,6.4vw,54px);font-weight:900;line-height:1.15;letter-spacing:.01em}
+.title{margin:0;font-family:'Trajan Pro','Trajan Pro 3',Trajan,'Cinzel','Times New Roman',Times,serif;font-size:clamp(28px,6vw,50px);font-weight:800;line-height:1.15;letter-spacing:.04em}
 .lead{margin:0;font-weight:700;color:var(--ink2);font-size:clamp(13px,2.4vw,17px);letter-spacing:.06em}
 
 .status{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:12px}
@@ -117,6 +117,12 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
   display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:700;text-align:left
 }
 .ghost:disabled{opacity:.55;cursor:default}
+.tools{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:end}
+.tools .ghost{height:100%;padding:10px 14px;min-height:0;flex-wrap:wrap}
+.tools .ghost .gl{gap:10px}
+.tools .ghost small{font-size:11px;line-height:1.4;display:block;margin-top:2px}
+.tools .seg{gap:6px}
+.tools .seg button{padding:0 4px}
 .gl{display:flex;align-items:center;gap:14px;min-width:0}
 .nicon{width:56px;height:42px;flex:none}
 .ghost b{color:var(--pen);font-size:22px;font-weight:800;white-space:nowrap}
@@ -194,7 +200,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .btn{min-height:58px;border-radius:18px;font-weight:800;font-size:17px;border:2px solid var(--ink);background:#fff;padding:0 20px}
 .btn.fill{background:linear-gradient(135deg,var(--accent2),var(--accent));border:0;color:var(--accent-ink);box-shadow:0 6px 14px rgba(232,89,12,.28)}
 .sticky{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:6}
-.hero.sm .title{font-size:clamp(28px,6vw,44px)}
+.hero.sm .title{font-size:clamp(26px,5.6vw,40px)}
 .empty{color:var(--ink);padding:28px 20px;text-align:center;border:2px dashed #e7c79a;border-radius:22px;background:#fff;font-weight:700;line-height:1.8}
 
 /* 問題カードの上段: 左に分野と本文、右に〇・おしい！ */
@@ -223,6 +229,10 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
   .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .card,.card:nth-child(4){grid-column:span 1}
   .card:nth-child(5){grid-column:span 2}
+  .tools{gap:10px}
+  .tools .ghost{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
+  .tools .ghost .gl{flex-direction:column;align-items:flex-start;gap:4px}
+  .tools .ghost small{display:none}
   .badge{position:static;align-self:flex-end;margin-bottom:4px}
   .card .nm{font-size:16px}
   .card .ic{font-size:32px}
@@ -537,7 +547,7 @@ function viewHome(){
   const pct=nx?Math.round((store.xp-cur)/(nx[0]-cur)*100):100;
   const d=store.day.d===todayStr()?store.day:{n:0,c:0};
   const noteN=ITEMS.filter(inNote).length;
-  const badge=dl>0?'入試まで <b>あと '+dl+' 日</b>':dl===0?'<b>今日が入試当日</b>':'入試おつかれさま';
+  const badge=dl>0?'<b>あと '+dl+' 日</b>':dl===0?'<b>今日が入試当日</b>':'入試おつかれさま';
   const best=RANKS[RANKS.length-1][1];
   const cards=ORDER.map(k=>{
     const pool=ITEMS.filter(i=>i.type===k);const m=pool.filter(mastered).length;
@@ -554,11 +564,11 @@ function viewHome(){
       '<div class="panel"><div class="l1"><small>今日</small><b>'+d.n+'問</b></div>'+
       '<div class="l2"><small>正解 '+d.c+'　／　覚えた語句 '+allM+'</small></div></div>'+
     '</section>'+
-    '<section class="stage"><h2 class="big">分野を選ぼう！</h2><div class="cards">'+cards+'</div>'+
+    '<section class="stage"><div class="cards">'+cards+'</div>'+
     '<button class="primary" data-a="start" data-t="all"><span>全分野に挑戦！</span><span aria-hidden="true">→</span></button>'+
-    '<div><p class="lab">1回の問題数</p><div class="seg">'+
+    '<div class="tools"><div><p class="lab">1回の問題数</p><div class="seg">'+
       [5,10,20].map(n=>'<button data-a="len" data-n="'+n+'" aria-pressed="'+(store.len===n)+'">'+n+'問</button>').join('')+'</div></div>'+
-    '<button class="ghost" data-a="notebook" '+(noteN?'':'disabled')+'><span class="gl">'+NOTE_ICON+'<span>復習ノート<br><small>つまづいた問題を攻略してパワーアップ！</small></span></span><b>'+noteN+'問</b></button>'+
+    '<button class="ghost" data-a="notebook" '+(noteN?'':'disabled')+'><span class="gl">'+NOTE_ICON+'<span>復習ノート<br><small>つまづいた問題を攻略してパワーアップ！</small></span></span><b>'+noteN+'問</b></button></div>'+
     '</section>'+
     '<p class="note">進み具合は、この端末のブラウザに保存されます。</p>';
 }
