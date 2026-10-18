@@ -152,6 +152,7 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .ins{margin:0;color:var(--ink2);font-size:14px;line-height:1.6}
 .body{font-weight:800;font-size:clamp(22px,4.6vw,30px);line-height:1.7;margin:0;text-wrap:balance}
 .qs{font-size:.62em;font-weight:700;color:var(--ink2)}
+.yomi{display:inline-block;white-space:nowrap;font-size:.58em;font-weight:500;color:var(--ink2);margin-left:1px;letter-spacing:0}
 .body .u{text-decoration:underline;text-decoration-color:var(--pen);text-decoration-thickness:3px;text-underline-offset:6px}
 .body .blank{display:inline-block;min-width:3.6em;border-bottom:3px solid var(--ink);text-align:center;color:var(--pen);line-height:1.3;margin:0 4px}
 .body .wd{font-size:clamp(28px,6vw,40px)}
@@ -686,7 +687,30 @@ const B=[
 ['星の王子さま','サン＝テグジュペリ','f','フランスの作家。小さな星から来た王子の話。'],
 ['若草物語','オルコット','f','アメリカの四姉妹をえがいた物語。'],
 ['トム・ソーヤーの冒険','マーク・トウェイン','f','ミシシッピ川の町の少年トムの冒険。'],
-['十五少年漂流記','ヴェルヌ','f','無人島に流れ着いた少年たちの物語。']
+['十五少年漂流記','ヴェルヌ','f','無人島に流れ着いた少年たちの物語。'],
+['山椒魚','井伏鱒二','m','ほら穴から出られなくなった山椒魚の話。'],
+['伊豆の踊子','川端康成','m','伊豆を旅する青年と、旅芸人の少女の物語。'],
+['小僧の神様','志賀直哉','m','すし屋での出来事をえがいた短編小説。「小説の神様」とよばれた作家。'],
+['一房の葡萄','有島武郎','m','絵の具をぬすんだ少年と先生をえがいた童話。'],
+['檸檬','梶井基次郎','m','京都の街で、檸檬を爆弾に見立てる青年の短編小説。'],
+['二十四の瞳','壺井栄','m','瀬戸内海の小さな島の、女の先生と十二人の子どもたち。'],
+['野菊の墓','伊藤左千夫','m','少年と少女の、せつないはつ恋をえがいた小説。'],
+['蟹工船','小林多喜二','m','かに漁船で働く人々のきびしい生活をえがいた小説。'],
+['智恵子抄','高村光太郎','m','妻の智恵子への思いをうたった詩集。'],
+['高瀬舟','森鷗外','m','罪人を舟で運ぶ役人と、罪人の会話をえがいた短編小説。'],
+['ビルマの竪琴','竹山道雄','m','戦争中のビルマで、竪琴を持つ兵士の物語。'],
+['土佐日記','紀貫之','c','平安時代の日記。女性になりすまして書いたとされる。'],
+['東海道中膝栗毛','十返舎一九','c','江戸時代の、旅をしながら笑いをさそう滑稽本。'],
+['雨月物語','上田秋成','c','江戸時代の、怪談を集めた短編集。'],
+['おらが春','小林一茶','c','江戸時代の俳人が、一年のできごとを書いた俳文集。'],
+['曽根崎心中','近松門左衛門','c','江戸時代の人形浄瑠璃・歌舞伎の脚本。'],
+['ガリバー旅行記','スウィフト','f','小人の国や巨人の国をおとずれる、ガリバーの冒険。'],
+['宝島','スティーブンソン','f','宝の地図をたよりに、少年が海賊と宝さがしをする冒険。'],
+['みにくいアヒルの子','アンデルセン','f','白鳥のひなが、みにくいと言われながら成長する童話。'],
+['大草原の小さな家','ワイルダー','f','アメリカの開拓時代の家族の暮らしをえがいた物語。'],
+['飛ぶ教室','ケストナー','f','ドイツの寄宿学校の少年たちの、クリスマスの物語。'],
+['長くつ下のピッピ','リンドグレーン','f','力持ちで自由な女の子、ピッピの物語。'],
+['ロビンソン・クルーソー','デフォー','f','無人島に流れ着いた男が、一人で生きぬく物語。']
 ];
 
 // 四字熟語: [熟語, 意味, 解説]
@@ -828,6 +852,8 @@ function petInner(st){
 function zukanIcon(st){
   return '<svg class="fz" viewBox="0 0 80 88" aria-hidden="true"><path d="M40 3l30 11v26c0 21-13 35-30 42C23 75 10 61 10 40V14z" fill="'+PCOL[st-1]+'" stroke="#4a3a22" stroke-width="3.5" stroke-linejoin="round"/><path d="M40 3l30 11v26c0 21-13 35-30 42z" fill="#fff" opacity=".16"/><path d="M17 20l23-8 23 8v20c0 16-9 28-23 34-14-6-23-18-23-34z" fill="#fff6e3" opacity=".96"/><g transform="translate(17 17) scale(.46)">'+petInner(st)+'</g></svg>';
 }
+const YOMI={'坊っちゃん':'ぼっちゃん','吾輩は猫である':'わがはいはねこである','羅生門':'らしょうもん','蜘蛛の糸':'くものいと','走れメロス':'はしれメロス','銀河鉄道の夜':'ぎんがてつどうのよる','注文の多い料理店':'ちゅうもんのおおいりょうりてん','手袋を買いに':'てぶくろをかいに','舞姫':'まいひめ','雪国':'ゆきぐに','みだれ髪':'みだれがみ','一握の砂':'いちあくのすな','源氏物語':'げんじものがたり','枕草子':'まくらのそうし','徒然草':'つれづれぐさ','方丈記':'ほうじょうき','おくのほそ道':'おくのほそみち','赤毛のアン':'あかげのアン','不思議の国のアリス':'ふしぎのくにのアリス','星の王子さま':'ほしのおうじさま','若草物語':'わかくさものがたり','トム・ソーヤーの冒険':'トム・ソーヤーのぼうけん','十五少年漂流記':'じゅうごしょうねんひょうりゅうき','夏目漱石':'なつめそうせき','芥川龍之介':'あくたがわりゅうのすけ','太宰治':'だざいおさむ','宮沢賢治':'みやざわけんじ','新美南吉':'にいみなんきち','森鷗外':'もりおうがい','川端康成':'かわばたやすなり','樋口一葉':'ひぐちいちよう','与謝野晶子':'よさのあきこ','石川啄木':'いしかわたくぼく','紫式部':'むらさきしきぶ','清少納言':'せいしょうなごん','兼好法師':'けんこうほうし','鴨長明':'かものちょうめい','松尾芭蕉':'まつおばしょう','山椒魚':'さんしょううお','伊豆の踊子':'いずのおどりこ','小僧の神様':'こぞうのかみさま','一房の葡萄':'ひとふさのぶどう','檸檬':'れもん','二十四の瞳':'にじゅうしのひとみ','野菊の墓':'のぎくのはか','蟹工船':'かにこうせん','智恵子抄':'ちえこしょう','高瀬舟':'たかせぶね','ビルマの竪琴':'ビルマのたてごと','土佐日記':'とさにっき','東海道中膝栗毛':'とうかいどうちゅうひざくりげ','雨月物語':'うげつものがたり','おらが春':'おらがはる','曽根崎心中':'そねざきしんじゅう','ガリバー旅行記':'ガリバーりょこうき','宝島':'たからじま','みにくいアヒルの子':'みにくいアヒルのこ','大草原の小さな家':'だいそうげんのちいさないえ','飛ぶ教室':'とぶきょうしつ','長くつ下のピッピ':'ながくつしたのピッピ','井伏鱒二':'いぶせますじ','志賀直哉':'しがなおや','有島武郎':'ありしまたけお','梶井基次郎':'かじいもとじろう','壺井栄':'つぼいさかえ','伊藤左千夫':'いとうさちお','小林多喜二':'こばやしたきじ','高村光太郎':'たかむらこうたろう','竹山道雄':'たけやまみちお','紀貫之':'きのつらゆき','十返舎一九':'じっぺんしゃいっく','上田秋成':'うえだあきなり','小林一茶':'こばやしいっさ','近松門左衛門':'ちかまつもんざえもん'};
+function yomi(t){return esc(t)+(YOMI[t]?'<small class="yomi">（'+esc(YOMI[t])+'）</small>':'');}
 const ORDER=['k','g','t','w','b','y'];
 
 const ITEMS=[];
@@ -930,7 +956,7 @@ function bodyHTML(q,ans){
   if(it.type==='w'&&it.v)return '<p class="body">'+esc(it.s).replace('〔','<span class="u">').replace('〕','</span>')+'<br><span class="qs">下線の語句の意味は？</span></p>';
   if(it.type==='w')return '<p class="body"><span class="wd">'+esc(it.w)+'</span></p>';
   if(it.type==='y')return '<p class="body">「'+esc(it.m)+'」\nにあてはまる四字熟語は？</p>'.replace('\n','<br>');
-  return '<p class="body">『'+esc(it.t)+'』</p>';
+  return '<p class="body">『'+yomi(it.t)+'』</p>';
 }
 /* ===== 状態 ===== */
 const app=document.getElementById('app');
@@ -1008,7 +1034,7 @@ function viewQuiz(){
   const R=state.round,q=R.qs[R.i],it=q.it;
   const pips=R.qs.map((x,i)=>'<i class="'+(x.first!==null?(x.first?'ok':'ng'):(i===R.i?'now':''))+'"></i>').join('');
   const maxLen=Math.max.apply(null,q.choices.map(c=>Array.from(c).length));
-  const two=maxLen<=6;
+  const two=maxLen<=6&&it.type!=='b';
   const ch=q.choices.map((c,j)=>{
     let cls='choice',extra='',dis='';
     const bad=q.wrong.indexOf(j)>=0;
@@ -1018,7 +1044,7 @@ function viewQuiz(){
       else if(bad){cls+=' wrong';extra='<span class="bt" aria-hidden="true">×</span>';}
       else cls+=' dim';
     }else if(bad){cls+=' wrong';dis=' disabled';extra='<span class="bt" aria-hidden="true">×</span>';}
-    return '<button class="'+cls+'" data-a="choose" data-i="'+j+'"'+dis+'><span class="mk">'+MARKS[j]+'</span><span class="tx">'+esc(c)+'</span>'+extra+'</button>';
+    return '<button class="'+cls+'" data-a="choose" data-i="'+j+'"'+dis+'><span class="mk">'+MARKS[j]+'</span><span class="tx">'+(it.type==='b'?yomi(c):esc(c))+'</span>'+extra+'</button>';
   }).join('');
   let stamp='';
   if(q.done)stamp='<div class="seikai" role="status">正解！</div>';
@@ -1045,9 +1071,9 @@ function viewQuiz(){
 function missRows(list){
   return '<ul class="list">'+list.map(it=>{
     const blank=it.type==='g'&&it.q.indexOf('（　）')>=0;
-    let q=esc(plainStem(it));
+    let q=it.type==='b'?'『'+yomi(it.t)+'』':esc(plainStem(it));
     if(it.type==='k'||blank)q=q.replace(/【(.*?)】/,'<b class="hl">$1</b>');
-    const a=it.type==='k'?'<span class="a">意味：'+esc(it.m)+'</span>':blank?'':'<span class="a">正解：<b>'+esc(it.a)+'</b></span>';
+    const a=it.type==='k'?'<span class="a">意味：'+esc(it.m)+'</span>':blank?'':'<span class="a">正解：<b>'+(it.type==='b'?yomi(it.a):esc(it.a))+'</b></span>';
     return '<li class="miss"><span class="tag" style="--tc:var(--c-'+it.type+')">'+TYPES[it.type].name+'</span><span class="q">'+q+'</span>'+a+'<span class="e">'+esc(it.e)+'</span></li>';
   }).join('')+'</ul>';
 }
