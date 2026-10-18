@@ -1073,6 +1073,38 @@ function gauge(qs,cur,litIdx){
     return '<i class="'+c+'"></i>';
   }).join('');
 }
+/* ===== 効果音（Web Audio） ===== */
+let actx=null;
+function audio(){
+  if(!actx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;actx=new AC();}
+  if(actx.state==='suspended')actx.resume();
+  return actx;
+}
+// tone(周波数Hz, 長さ秒, 波形, 音量, 開始の遅れ秒)
+function tone(f,d,type,vol,delay){
+  const c=audio();if(!c)return;
+  type=type||'sine';vol=vol==null?.035:vol;delay=delay||0;
+  const t=c.currentTime+delay,o=c.createOscillator(),g=c.createGain();
+  o.type=type;o.frequency.setValueAtTime(f,t);
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(vol,t+.008);
+  g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g);g.connect(c.destination);
+  o.start(t);o.stop(t+d+.02);
+}
+// 正解音
+const correctSound=()=>{
+  tone(590,.10);
+  tone(790,.13,'sine',.035,.08);
+};
+// 不正解音（おしい音）
+const closeSound=()=>{
+  tone(660,.07,'triangle',.025);
+  tone(760,.08,'triangle',.022,.065);
+};
+// iPad: 最初のタッチで音声を有効にする
+document.addEventListener('touchstart',function un(){audio();document.removeEventListener('touchstart',un);},{passive:true});
+
 function choose(j){
   const R=state.round,q=R.qs[R.i];
   if(!q||q.done||q.wrong.indexOf(j)>=0)return;
@@ -1093,7 +1125,7 @@ function choose(j){
     }else R.streak=0;
     save();
   }
-  if(ok)q.done=true;else q.wrong.push(j);
+  if(ok){q.done=true;correctSound();}else{q.wrong.push(j);closeSound();}
   render(false);
 }
 function next(){
