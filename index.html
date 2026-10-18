@@ -197,7 +197,10 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 .pill b{color:var(--accent);font-size:18px;font-weight:800}
 .up{width:100%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border-radius:18px;padding:12px 16px;font-weight:800;font-size:18px;box-shadow:0 6px 14px rgba(232,89,12,.28)}
 .perfect{background:linear-gradient(145deg,#27a577,#0f7a56);color:#fff;border-radius:22px;padding:18px;text-align:center;font-weight:900;font-size:24px;box-shadow:0 8px 18px rgba(30,30,60,.16)}
-.sec{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sbtns{display:flex;gap:8px;flex-wrap:wrap}
+.sb{min-height:44px;padding:0 16px;border-radius:14px;border:2px solid var(--ink);background:#fff;font-weight:800;font-size:15px;color:var(--ink)}
+.sb.fill{background:linear-gradient(135deg,var(--accent2),var(--accent));border:0;color:var(--accent-ink);box-shadow:0 4px 10px rgba(232,89,12,.28)}
+.sec{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .sec h2{font-size:clamp(18px,3.2vw,22px);font-weight:800;color:var(--ink)}
 .list{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
 .miss{background:var(--soft);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
@@ -1143,15 +1146,15 @@ function viewResult(){
   const r1=rankOf(store.xp);
   const up=r1>R.rank0?'<div class="up">称号が上がりました：'+RANKS[r1][1]+'</div>':'';
   const noteN=ITEMS.filter(inNote).length;
-  const btns='<div class="row"><button class="btn fill" data-a="start" data-t="'+(R.key==='review'?'all':R.key)+'">もう一度</button>'+(noteN?'<button class="btn" data-a="review">復習ノートをやる（'+noteN+'問）</button>':'')+'</div>';
+  const sb='<div class="sbtns"><button class="sb fill" data-a="start" data-t="'+(R.key==='review'?'all':R.key)+'">もう一度</button>'+(noteN?'<button class="sb" data-a="notebook">復習ノートへ行く</button>':'')+'</div>';
   const pips=R.qs.map(x=>'<i class="'+(x.ok?'ok':'ng')+'"></i>').join('');
   return '<div class="qbar"><button class="back" data-a="home">ホームへ</button></div>'+
     '<section class="stage res"><h2 class="big">結果発表！</h2>'+
     '<div class="score"><b>'+R.score+'</b><span>／ '+n+' 問正解</span></div>'+
     '<div class="pips" aria-hidden="true">'+pips+'</div>'+
     '<div class="pills"><span class="pill">獲得 <b>+'+R.xp+'</b> ポイント</span><span class="pill">称号 <b>'+RANKS[r1][1]+'</b></span></div>'+up+'</section>'+
-    newCardsSection(R)+(miss.length?'<section class="stage"><div class="sec"><h2>まちがえた語句　'+miss.length+'問</h2></div>'+missRows(miss)+btns+'</section>':
-      '<div class="perfect">全問正解です！</div>'+btns);
+    newCardsSection(R)+(miss.length?'<section class="stage"><div class="sec"><h2>まちがえた語句　'+miss.length+'問</h2>'+sb+'</div>'+missRows(miss)+'</section>':
+      '<div class="perfect">全問正解です！</div><section class="stage"><div class="sec"><h2>つぎは？</h2>'+sb+'</div></section>');
 }
 function viewNotebook(){
   const list=ITEMS.filter(inNote);
@@ -1230,7 +1233,7 @@ function viewZukan(){
 }
 function newCardsSection(R){
   if(!R.newCards||!R.newCards.length)return '';
-  return '<section class="stage"><div class="sec"><h2>あたらしく覚えた語　'+R.newCards.length+'語</h2><small>ことば図鑑に くわわりました</small></div><div class="zgrid newg">'+
+  return '<section class="stage"><div class="sec"><h2>あたらしく覚えた語　'+R.newCards.length+'語</h2><div class="sbtns"><button class="sb" data-a="zukan">ことば図鑑へ行く</button></div></div><div class="zgrid newg">'+
     R.newCards.map((it,i)=>'<div class="zwrap" style="animation-delay:'+(0.15+i*0.18)+'s"><span class="zspark" aria-hidden="true">✦</span>'+
       '<div class="zc2" style="--c:'+ZC[it.type]+'"><span class="zt2">'+starsHTML(lvl(it))+'</span><span class="znew">NEW</span>'+cardFace(it)+'</div></div>').join('')+'</div></section>';
 }
