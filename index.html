@@ -67,7 +67,11 @@ h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--ink2
 /* ホーム: 見出し */
 /* 見出し: 入試カウントは右上、タイトルは中央 */
 .hero{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
-.bwrap{position:absolute;top:0;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.hrow{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
+.hrow>*{pointer-events:auto}
+.plaza{display:inline-flex;align-items:center;gap:4px;min-height:34px;padding:0 12px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--ink2);font-size:13px;font-weight:800;text-decoration:none;letter-spacing:.02em}
+.plaza:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bwrap{position:static;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 .ver{font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.04em;margin-right:8px}
 .badge{display:inline-flex;align-items:baseline;gap:8px;background:#fff;border:2.5px solid #e6cdb8;color:#a8454d;font-weight:700;font-size:13px;border-radius:999px;padding:2px 16px}
 .badge b{font-size:18px;color:var(--accent);font-weight:800}
@@ -321,7 +325,7 @@ button.panel.zk{border:0;width:100%;font:inherit;text-align:left;cursor:pointer;
   .tools .ghost{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
   .tools .ghost .gl{flex-direction:column;align-items:flex-start;gap:4px}
   .tools .ghost small{display:none}
-  .bwrap{position:static;align-self:flex-end;margin-bottom:4px}
+  .hrow{position:static;width:100%;margin-bottom:4px}
   .card .nm{font-size:16px}
   .card .ic{font-size:32px}
   .card .hd{gap:6px}
@@ -1150,7 +1154,7 @@ function viewHome(){
       '<span class="mm"><span class="bar"><i style="width:'+Math.round(m/pool.length*100)+'%"></i></span>覚えた '+m+' / '+pool.length+'</span></button>';
   }).join('');
   const allM=store.col.length;
-  return '<header class="hero"><div class="bwrap"><span class="badge">'+badge+'</span><span class="ver">v2.0</span></div><h1 class="title">Wild Word World</h1>'+
+  return '<header class="hero"><div class="hrow"><a class="plaza" href="https://ainotenoue.github.io/">← ひろばへ</a><div class="bwrap"><span class="badge">'+badge+'</span><span class="ver">v2.0</span></div></div><h1 class="title">Wild Word World</h1>'+
       '<p class="lead">〜'+best+'を目指そう〜</p></header>'+
     '<section class="status">'+
       '<div class="panel"><div class="l1"><small>称号</small><b>'+RANKS[r][1]+'</b>'+(store.best?'<span class="best">最大コンボ <b>'+store.best+'</b></span>':'')+'</div>'+
