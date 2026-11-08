@@ -346,6 +346,61 @@ button.panel.zk{border:0;width:100%;font:inherit;text-align:left;cursor:pointer;
   .cell.blank.filled,.choice .bt{animation:none}
   .card{transition:none}
 }
+
+/* ===== 巻・賞状 ===== */
+.status{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr)}
+@media (max-width:560px){.status{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.status>.panel:first-child{grid-column:1/-1}}
+.card .mm .vol{font-weight:900;margin-right:2px}
+.card .mm .tot{display:block;font-size:10.5px;opacity:.7;margin-top:-2px}
+.cer{position:fixed;inset:0;z-index:60;background:rgba(40,28,20,.6);display:flex;align-items:center;justify-content:center;padding:14px;overflow:hidden}
+.cbox{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;max-height:100%}
+.ctop{margin:0;color:#fff;font-weight:900;font-size:clamp(20px,3.4vw,28px);letter-spacing:.06em;text-shadow:0 2px 8px rgba(0,0,0,.35);animation:cpop .5s ease-out both}
+.cwrap{position:relative;height:min(76vh,calc(100vh - 150px));aspect-ratio:640/900;max-width:92vw;animation:cin .7s cubic-bezier(.2,1.3,.4,1) both}
+.cwrap canvas{width:100%;height:100%;display:block;border-radius:4px;box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.hanko{position:absolute;opacity:0;transform:scale(2.4) rotate(-24deg);pointer-events:none}
+.hanko.on{animation:stamp .34s cubic-bezier(.6,0,.9,.5) forwards}
+@keyframes stamp{0%{opacity:0;transform:scale(2.4) rotate(-24deg)}70%{opacity:.95;transform:scale(.92) rotate(-10deg)}100%{opacity:.9;transform:scale(1) rotate(-10deg)}}
+@keyframes cin{from{opacity:0;transform:translateY(30px) scale(.85)}to{opacity:1;transform:none}}
+@keyframes cpop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.cbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.cbtns .sb{background:#fff}
+.cbtns .sb.fill{background:var(--btn)}
+.cfti{position:absolute;inset:0;pointer-events:none;z-index:3}
+.cfti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;animation:fall linear both}
+@keyframes fall{from{transform:translateY(0) rotate(0)}to{transform:translateY(110vh) rotate(var(--r))}}
+.cbox.nk,.cbox.lockm{background:#fff;border-radius:24px;padding:26px 28px;width:min(440px,92vw);box-shadow:0 14px 40px rgba(0,0,0,.3)}
+.cbox.nk .ctop{color:var(--accent);text-shadow:none}
+.clead{margin:0;font-weight:700;text-align:center}
+.nickin,.nkrow input{font:inherit;font-size:22px;font-weight:800;text-align:center;border:2px solid var(--line);border-radius:14px;padding:8px 12px;width:100%;color:var(--ink);background:var(--soft)}
+.nickin:focus,.nkrow input:focus{outline:3px solid var(--accent2);border-color:transparent}
+.cbox.nk .primary{width:100%}
+.lmsg{margin:0;text-align:center;font-weight:700;line-height:1.8}
+.lmsg b{font-size:28px;color:var(--accent)}
+.cwords{background:#fffdf6;border:6px solid #e8d6a8;border-radius:8px;padding:16px 18px;width:min(560px,92vw);max-height:calc(100vh - 120px);overflow:auto}
+.cwords p{margin:0 0 10px;font-weight:900;text-align:center}
+.cwords div{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.cwords span{background:var(--c);border-radius:10px;padding:4px 10px;font-weight:700;font-size:14px}
+/* 賞状ファイル */
+.stop{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.nkrow{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:var(--ink2)}
+.nkrow input{width:160px;font-size:16px;padding:6px 10px}
+.shint{margin:0;font-size:13px;color:var(--ink2)}
+.srow{display:flex;align-items:center;gap:12px}
+.sh2{flex:none;width:132px;font-weight:800;font-size:13px;background:var(--c);border-radius:12px;padding:6px 10px;text-align:center;line-height:1.3}
+.ths{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sep{width:2px;height:60px;background:var(--line);margin:0 2px}
+.th{width:58px;height:78px;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px;position:relative;border:0}
+.th.got{background:#fffdf6;box-shadow:inset 0 0 0 4px var(--fc),inset 0 0 0 6px #fffdf6,inset 0 0 0 7px #c9a24a,0 3px 8px rgba(120,80,40,.22)}
+.th.got.k-f,.th.got.k-all{box-shadow:inset 0 0 0 5px #e3b23c,inset 0 0 0 7px #fff3c4,inset 0 0 0 8px #b8860b,0 3px 10px rgba(180,130,20,.45)}
+.th .sjv{display:block;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:900;font-size:16px;line-height:1.05}
+.th .sjl{display:block;font-size:10px;font-weight:800;line-height:1.1;white-space:nowrap}
+.th.lock{background:#f3efea;border:2px dashed #d8cfc4;color:#a89c90}
+.th.lock .sjv{font-family:inherit}
+.th .sjp{display:block;width:40px;height:4px;border-radius:2px;background:#e3dbd2;overflow:hidden}
+.th .sjp i{display:block;height:100%;background:var(--fc)}
+.th .sjn{display:block;font-size:10px;font-weight:800;line-height:1}
+.th:active{transform:scale(.96)}
+@media (max-width:560px){.srow{flex-direction:column;align-items:flex-start}.sh2{width:auto}}
 </style>
 
 </head>
@@ -950,7 +1005,7 @@ Y.forEach(([a,m,e])=>ITEMS.push({id:'y|'+a,type:'y',a,m,e}));
 
 /* ===== 保存 ===== */
 const LS='gokudojo-v1';
-const blank=()=>({st:{},xp:0,day:{d:'',n:0,c:0},len:10,col:[],best:0});
+const blank=()=>({st:{},xp:0,day:{d:'',n:0,c:0},len:10,col:[],best:0,aw:{}});
 let store=blank();
 try{
   const raw=localStorage.getItem(LS);
@@ -985,8 +1040,10 @@ function weight(it){
   const s=stat(it.id);let w=1;
   if(!s||!s.s)w+=1.5;else{w+=(1-s.c/s.s)*2;if(s.r>=2)w-=0.6;}
   if(s&&s.w)w+=3;
+  if(BOOST.has(it.id))w*=3;
   return Math.max(w,0.3);
 }
+let BOOST=new Set();
 function pickWeighted(pool,n){
   const arr=pool.map(it=>({it,w:weight(it)}));const out=[];
   while(out.length<n&&arr.length){
@@ -1056,9 +1113,13 @@ function startRound(key){
   let pool;
   if(key==='review')pool=ITEMS.filter(inNote);
   else if(key==='all')pool=ITEMS;
+  else if(key.slice(0,2)==='v:'){const p=key.split(':');pool=VOLS[p[1]][+p[2]];}
   else pool=ITEMS.filter(i=>i.type===key);
   if(!pool.length)return;
   const n=Math.min(store.len,pool.length);
+  // いまの巻の、まだ覚えていない語を出やすくする
+  BOOST=new Set();ORDER.forEach(k=>{const v=curVol(k);if(v>=0)VOLS[k][v].forEach(it=>{if(!collected(it))BOOST.add(it.id);});});
+  state.cv=null;
   state.round={key,qs:pickWeighted(pool,n).map(makeQ),i:0,score:0,streak:0,maxStreak:0,best0:store.best||0,xp:0,rank0:rankOf(store.xp),newCards:[]};
   state.screen='quiz';
   render(true);
@@ -1134,7 +1195,7 @@ function choose(j){
 }
 function next(){
   const R=state.round;
-  if(R.i+1>=R.qs.length){state.screen='result';render(true);}
+  if(R.i+1>=R.qs.length){state.screen='result';checkAwards();render(true);}
   else{R.i++;render(true);}
 }
 
@@ -1149,17 +1210,19 @@ function viewHome(){
   const best=RANKS[RANKS.length-1][1];
   const cards=ORDER.map(k=>{
     const pool=ITEMS.filter(i=>i.type===k);const m=pool.filter(collected).length;
+    const cv=curVol(k),vg=cv>=0?volGot(k,cv):0,vn=cv>=0?VOLS[k][cv].length:1;
     return '<button class="card g-'+k+'" data-a="start" data-t="'+k+'">'+
       '<span class="hd"><span class="ic" aria-hidden="true">'+TYPES[k].ic+'</span><span class="nm">'+TYPES[k].name.split('・').map(x=>'<span style="white-space:nowrap">'+x+'</span>').join('・<wbr>')+'</span></span>'+
-      '<span class="mm"><span class="bar"><i style="width:'+Math.round(m/pool.length*100)+'%"></i></span>覚えた '+m+' / '+pool.length+'</span></button>';
+      '<span class="mm"><span class="bar"><i style="width:'+Math.round((cv>=0?vg/vn:1)*100)+'%"></i></span>'+(cv>=0?'<b class="vol">'+volName(cv)+'</b> '+vg+' / '+vn+'<span class="tot">全 '+m+' / '+pool.length+'</span>':'<b class="vol">制覇！</b> '+m+' / '+pool.length)+'</span></button>';
   }).join('');
   const allM=store.col.length;
-  return '<header class="hero"><div class="hrow"><a class="plaza" href="https://ainotenoue.github.io/">← ひろばへ</a><div class="bwrap"><span class="badge">'+badge+'</span><span class="ver">v2.0</span></div></div><h1 class="title">Wild Word World</h1>'+
+  return '<header class="hero"><div class="hrow"><a class="plaza" href="https://ainotenoue.github.io/">← ひろばへ</a><div class="bwrap"><span class="badge">'+badge+'</span><span class="ver">v2.1</span></div></div><h1 class="title">Wild Word World</h1>'+
       '<p class="lead">〜'+best+'を目指そう〜</p></header>'+
     '<section class="status">'+
       '<div class="panel"><div class="l1"><small>称号</small><b>'+RANKS[r][1]+'</b>'+(store.best?'<span class="best">最大コンボ <b>'+store.best+'</b></span>':'')+'</div>'+
       '<div class="l2"><span class="bar"><i style="width:'+pct+'%"></i></span><small>'+(nx?'次の称号まで あと '+(nx[0]-store.xp)+' ポイント':'最高の称号です')+'</small></div></div>'+
       '<button class="panel zk" data-a="zukan">'+zukanIcon(r+1)+'<div class="zt"><div class="zn">ことば図鑑</div><div class="zc"><b>'+allM+'</b><small> / '+ITEMS.length+'</small></div><span class="bar"><i style="width:'+Math.round(allM/ITEMS.length*100)+'%"></i></span></div><span class="zgo" aria-hidden="true">›</span></button>'+
+      '<button class="panel zk sj" data-a="shojo">'+SJ_ICON+'<div class="zt"><div class="zn">賞状ファイル</div><div class="zc"><b>'+AWARD_IDS.filter(id=>store.aw[id]).length+'</b><small> / '+AWARD_IDS.length+'</small></div></div><span class="zgo" aria-hidden="true">›</span></button>'+
     '</section>'+
     '<section class="stage"><div class="cards">'+cards+'</div>'+
     '<button class="primary" data-a="start" data-t="all"><span>全分野に挑戦！</span><span aria-hidden="true">→</span></button>'+
@@ -1318,8 +1381,237 @@ function newCardsSection(R){
       '<div class="zc2" style="--c:'+ZC[it.type]+';--ci:'+ZI[it.type]+'"><span class="zt2">'+starsHTML(lvl(it))+'</span><span class="znew">NEW</span>'+cardFace(it)+'</div></div>').join('')+'</div></section>';
 }
 
+/* ===== 巻と賞状 =====
+   各分野を約20語ずつの「巻」に分ける。巻の語をすべて覚える（図鑑に入る）と賞状。
+   賞状のid … 'v:分野:巻番号'（巻）、'f:分野'（分野制覇）、'r:称号番号'（称号）、'all'（皆伝） */
+const VOL_SIZE=20;
+const VOLS={};
+ORDER.forEach(k=>{
+  const pool=ITEMS.filter(i=>i.type===k),n=Math.ceil(pool.length/VOL_SIZE),vols=[];let s=0;
+  for(let v=0;v<n;v++){const sz=Math.floor(pool.length/n)+(v<pool.length%n?1:0);vols.push(pool.slice(s,s+sz));s+=sz;}
+  VOLS[k]=vols;
+});
+const volOf={};ORDER.forEach(k=>VOLS[k].forEach((vs,v)=>vs.forEach(it=>volOf[it.id]=v)));
+const volGot=(k,v)=>VOLS[k][v].filter(collected).length;
+const curVol=k=>{for(let v=0;v<VOLS[k].length;v++)if(volGot(k,v)<VOLS[k][v].length)return v;return -1;};
+const KD='〇一二三四五六七八九';
+function kan(n){
+  if(n<10)return KD[n];
+  if(n<100)return (n>=20?KD[Math.floor(n/10)]:'')+'十'+(n%10?KD[n%10]:'');
+  const h=Math.floor(n/100),r=n%100;return (h>1?KD[h]:'')+'百'+(r?kan(r):'');
+}
+const volName=v=>'第'+kan(v+1)+'巻';
+const AWARD_IDS=[];
+ORDER.forEach(k=>{VOLS[k].forEach((_,v)=>AWARD_IDS.push('v:'+k+':'+v));AWARD_IDS.push('f:'+k);});
+for(let i=1;i<RANKS.length;i++)AWARD_IDS.push('r:'+i);
+AWARD_IDS.push('all');
+if(!store.aw||typeof store.aw!=='object')store.aw={};
+function earned(id){
+  const p=id.split(':');
+  if(p[0]==='v')return volGot(p[1],+p[2])===VOLS[p[1]][+p[2]].length;
+  if(p[0]==='f')return VOLS[p[1]].every((_,v)=>volGot(p[1],v)===VOLS[p[1]][v].length);
+  if(p[0]==='r')return rankOf(store.xp)>=+p[1];
+  return store.col.length>=ITEMS.length;
+}
+/* まだもらっていない賞状を調べて、授与の列に入れる */
+function checkAwards(){
+  const d=todayStr(),nw=AWARD_IDS.filter(id=>!store.aw[id]&&earned(id));
+  nw.forEach(id=>store.aw[id]=d);
+  if(nw.length){save();state.cer=(state.cer||[]).concat(nw);}
+}
+function awardInfo(id){
+  const p=id.split(':');
+  if(p[0]==='v'){const k=p[1],v=+p[2],n=VOLS[k][v].length;
+    return {kind:'v',k,v,frame:ZC[k],thumb:volName(v),
+      body:['あなたは',TYPES[k].name,volName(v)+'の　'+kan(n)+'語を','見事に　覚えました','よって　ここに','これを　賞します']};}
+  if(p[0]==='f'){const k=p[1],n=ITEMS.filter(i=>i.type===k).length;
+    return {kind:'f',k,frame:'#e3b23c',thumb:'制覇',
+      body:['あなたは',TYPES[k].name+'の','全'+kan(n)+'語を　覚え','この分野を　制覇しました','その努力を　たたえ','これを　賞します']};}
+  if(p[0]==='r'){const r=+p[1];
+    return {kind:'r',r,frame:SPCOL[r],thumb:RANKS[r][1].replace('ことばの',''),
+      body:['あなたは','日々の　努力を　かさね','「'+RANKS[r][1]+'」の','称号を　得ました','よって　ここに','これを　賞します']};}
+  return {kind:'all',frame:'#e3b23c',thumb:'皆伝',
+    body:['あなたは','五百語の　ことばを','すべて　覚え','ことばの　皆伝と','なりました','心から　これを　賞します']};
+}
+const wordLabel=it=>it.type==='k'?it.q.replace('□',it.a):it.type==='g'?(it.q.indexOf('（　）')>=0?it.a:it.q):it.type==='b'?it.t:it.type==='y'?it.a:it.w;
+
+/* --- 賞状を canvas にかく（たて書き） --- */
+const CW=640,CH=900;
+const MINCHO='"Hiragino Mincho ProN","ヒラギノ明朝 ProN","Yu Mincho","YuMincho","Noto Serif JP","Noto Serif CJK JP",serif';
+const ROT='ー－―～〜…‥（）「」『』〔〕【】-~()';
+function vtext(ctx,s,x,y,size,gap){
+  // 1文字ずつ下へ。のばす音やかっこは90度回す。全角スペースは半分あける
+  ctx.font='700 '+size+'px '+MINCHO;ctx.textAlign='center';ctx.textBaseline='middle';
+  const step=size*(gap||1.08);
+  for(const ch of s){
+    if(ch==='　'){y+=step*.5;continue;}
+    if(ROT.indexOf(ch)>=0){ctx.save();ctx.translate(x,y+step/2);ctx.rotate(Math.PI/2);ctx.fillText(ch,0,0);ctx.restore();}
+    else if('、。'.indexOf(ch)>=0)ctx.fillText(ch,x+size*.6,y+step/2-size*.6);
+    else ctx.fillText(ch,x,y+step/2);
+    y+=step;
+  }
+  return y;
+}
+const vlen=(s,size,gap)=>{let n=0;for(const ch of s)n+=ch==='　'?.5:1;return n*size*(gap||1.08);};
+function frame(ctx,col,gold){
+  ctx.fillStyle='#fffdf6';ctx.fillRect(0,0,CW,CH);
+  // 和紙の風合い
+  for(let i=0;i<260;i++){ctx.fillStyle='rgba(190,160,110,'+(Math.random()*.07)+')';ctx.fillRect(Math.random()*CW,Math.random()*CH,Math.random()*28+4,1.2);}
+  ctx.lineWidth=16;ctx.strokeStyle=col;ctx.strokeRect(22,22,CW-44,CH-44);
+  ctx.lineWidth=3;ctx.strokeStyle=gold?'#b8860b':'#c9a24a';ctx.strokeRect(10,10,CW-20,CH-20);ctx.strokeRect(38,38,CW-76,CH-76);
+  // 枠の飾り（ひし形の列）
+  ctx.fillStyle=gold?'#fff3c4':'rgba(255,255,255,.75)';
+  for(let x=46;x<CW-30;x+=26){dia(ctx,x,30,4);dia(ctx,x,CH-30,4);}
+  for(let y=46;y<CH-30;y+=26){dia(ctx,30,y,4);dia(ctx,CW-30,y,4);}
+  // 四すみの飾り
+  [[54,54],[CW-54,54],[54,CH-54],[CW-54,CH-54]].forEach(([x,y])=>{ctx.fillStyle=gold?'#d4a017':'#c9a24a';dia(ctx,x,y,10);ctx.fillStyle='#fffdf6';dia(ctx,x,y,4);});
+}
+function dia(ctx,x,y,r){ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x+r,y);ctx.lineTo(x,y+r);ctx.lineTo(x-r,y);ctx.closePath();ctx.fill();}
+function reiwa(d){const p=d.split('-').map(Number);return '令和'+kan(p[0]-2018)+'年'+kan(p[1])+'月'+kan(p[2])+'日';}
+function drawCert(cv,id,withHanko){
+  const A=awardInfo(id),dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=CW*dpr;cv.height=CH*dpr;const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+  const gold=A.kind==='f'||A.kind==='all';
+  frame(ctx,A.frame,gold);
+  ctx.fillStyle='#2b2220';
+  // 題（右はし）
+  vtext(ctx,'賞　状',CW-112,96,78,1.12);
+  if(A.kind==='r'||A.kind==='all'||A.kind==='f'){ // 格の高い賞状は、題の下に紋章
+    ctx.save();ctx.translate(CW-112,420);
+    ctx.fillStyle=A.kind==='r'?SPCOL[A.r]:'#f2c94c';ctx.strokeStyle='#7a5a12';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(0,-34);ctx.lineTo(28,-24);ctx.lineTo(28,2);ctx.quadraticCurveTo(26,26,0,38);ctx.quadraticCurveTo(-26,26,-28,2);ctx.lineTo(-28,-24);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='900 26px '+MINCHO;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(A.kind==='r'?kan(A.r+1):A.kind==='f'?'覇':'極',0,2);ctx.restore();
+  }
+  // 名前
+  const nick=(store.nick||'').trim()||'なまえ';
+  ctx.fillStyle='#2b2220';
+  const ny=vtext(ctx,nick,CW-212,150,44,1.04);
+  vtext(ctx,'　殿',CW-212,ny,40,1.04);
+  // 本文
+  let x=CW-292;
+  A.body.forEach(line=>{
+    const sz=vlen(line,30)>560?Math.floor(30*560/vlen(line,30)):30;
+    ctx.fillStyle='#2b2220';vtext(ctx,line,x,188,sz,1.1);x-=46;
+  });
+  // 日付・発行
+  ctx.fillStyle='#4a3a30';vtext(ctx,reiwa(store.aw[id]||todayStr()),76,150,24,1.08);
+  ctx.save();ctx.translate(78,440);ctx.rotate(Math.PI/2);ctx.font='700 30px "Cinzel",'+MINCHO;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle='#2b2220';ctx.fillText('Wild Word World',0,0);ctx.restore();
+  return withHanko?hankoImg().then(img=>{ctx.drawImage(img,HX-HR,HY-HR,HR*2,HR*2);}):Promise.resolve();
+}
+/* はんこ: 相棒の顔を朱色で */
+const HR=56,HX=90,HY=CH-126;
+let hankoCache={};
+function hankoImg(){
+  const st=rankOf(store.xp)+1;
+  if(hankoCache[st])return Promise.resolve(hankoCache[st]);
+  return new Promise(res=>{
+    const body=petInner(st).replace(/#7a4a12/g,'#d23a2a').replace(/fill="#(?!d23a2a)[0-9a-fA-F]{3,6}"/g,'fill="#fffdf6"').replace(/opacity="[^"]*"/g,'');
+    const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">'+body+'</svg>';
+    const im=new Image();
+    im.onload=()=>{
+      const c=document.createElement('canvas');c.width=c.height=240;const g=c.getContext('2d');
+      g.fillStyle='#fffdf6';g.beginPath();g.arc(120,120,104,0,Math.PI*2);g.fill();
+      g.drawImage(im,24,26,192,192);
+      g.strokeStyle='#d23a2a';g.lineWidth=12;g.beginPath();g.arc(120,120,110,0,Math.PI*2);g.stroke();
+      g.lineWidth=4;g.beginPath();g.arc(120,120,96,0,Math.PI*2);g.stroke();
+      // かすれ
+      g.globalCompositeOperation='destination-out';
+      for(let i=0;i<90;i++){g.fillStyle='rgba(0,0,0,'+(Math.random()*.5)+')';g.beginPath();g.arc(Math.random()*240,Math.random()*240,Math.random()*3+.5,0,Math.PI*2);g.fill();}
+      g.globalCompositeOperation='source-over';
+      const out=new Image();out.onload=()=>{hankoCache[st]=out;res(out);};out.src=c.toDataURL();
+    };
+    im.onerror=()=>{const c=document.createElement('canvas');c.width=c.height=240;const g=c.getContext('2d');g.strokeStyle='#d23a2a';g.lineWidth=12;g.beginPath();g.arc(120,120,110,0,Math.PI*2);g.stroke();g.fillStyle='#d23a2a';g.font='900 90px '+MINCHO;g.textAlign='center';g.textBaseline='middle';g.fillText('賞',120,124);const out=new Image();out.onload=()=>res(out);out.src=c.toDataURL();};
+    im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  });
+}
+function saveCert(id){
+  const c=document.createElement('canvas');
+  drawCert(c,id,true).then(()=>c.toBlob(blob=>{
+    if(!blob)return;
+    const file=new File([blob],'shojo.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file]}).catch(()=>{});return;}
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='shojo.png';document.body.appendChild(a);a.click();a.remove();
+  },'image/png'));
+}
+/* --- 授与の音 --- */
+const fanfare=()=>{[[523,0],[659,.12],[784,.24],[1047,.40]].forEach(([f,d])=>tone(f,d===.40?.6:.16,'triangle',.05,d));tone(1319,.5,'sine',.025,.40);};
+const ponSound=()=>{tone(150,.16,'sine',.16);tone(95,.22,'sine',.12,.02);tone(1200,.05,'triangle',.02,.01);};
+
+/* --- 授与式（結果画面やホームの上に出る） --- */
+function confettiHTML(){
+  if(reduce)return '';
+  const cols=['#ffbdbd','#ffddb3','#fdf28a','#beeaa4','#b8e0f0','#cec4e9','#f5c542'];let h='<div class="cfti" aria-hidden="true">';
+  for(let i=0;i<46;i++)h+='<i style="left:'+(Math.random()*100)+'%;background:'+cols[i%cols.length]+';animation-delay:'+(Math.random()*1.2+.5).toFixed(2)+'s;animation-duration:'+(Math.random()*2+2.6).toFixed(2)+'s;--r:'+(Math.random()*720-360|0)+'deg"></i>';
+  return h+'</div>';
+}
+function cerHTML(){
+  if(!store.nick)return '<div class="cer"><div class="cbox nk"><p class="ctop">賞状をもらえるよ！</p><p class="clead">賞状に書く なまえ（ニックネーム）を入れてね</p>'+
+    '<input id="nick" class="nickin" maxlength="8" autocomplete="off" placeholder="ニックネーム"><button class="primary" data-a="nickset"><span>けってい</span><span aria-hidden="true">→</span></button></div></div>';
+  const id=state.cer[0],A=awardInfo(id),more=state.cer.length-1;
+  const head=A.kind==='v'?TYPES[A.k].name+'　'+volName(A.v)+' クリア！':A.kind==='f'?TYPES[A.k].name+' 制覇！':A.kind==='r'?'称号「'+RANKS[A.r][1]+'」！':'全500語 皆伝！';
+  return '<div class="cer">'+confettiHTML()+'<div class="cbox"><p class="ctop">'+head+'</p>'+
+    '<div class="cwrap"><canvas id="certc" data-id="'+id+'" data-cer="1" role="img" aria-label="賞状 '+esc(head)+'"></canvas><img class="hanko" id="hanko" alt=""></div>'+
+    '<div class="cbtns">'+(more?'<button class="sb fill" data-a="cernext">つぎの賞状（あと'+more+'枚）</button>':'<button class="sb fill" data-a="cerclose">やったね！</button>')+
+    '<button class="sb" data-a="shojo">賞状ファイルを見る</button></div></div></div>';
+}
+function paintCer(){
+  const cv=document.getElementById('certc');if(!cv)return;
+  const id=cv.getAttribute('data-id');
+  if(cv.getAttribute('data-cer')){
+    drawCert(cv,id,false);
+    hankoImg().then(img=>{
+      const h=document.getElementById('hanko');if(!h)return;
+      h.src=img.src;
+      h.style.left=((HX-HR)/CW*100)+'%';h.style.top=((HY-HR)/CH*100)+'%';h.style.width=(HR*2/CW*100)+'%';
+      if(reduce){h.classList.add('on');return;}
+      setTimeout(()=>{h.classList.add('on');setTimeout(ponSound,330);},900);
+    });
+    if(!reduce)setTimeout(fanfare,150);
+  }else drawCert(cv,id,true);
+}
+
+/* --- 賞状ファイル --- */
+function thumb(id){
+  const A=awardInfo(id),got=!!store.aw[id];
+  let sub='';
+  if(!got&&A.kind==='v'){const g=volGot(A.k,A.v),n=VOLS[A.k][A.v].length;sub='<span class="sjp"><i style="width:'+Math.round(g/n*100)+'%"></i></span><span class="sjn">'+g+'/'+n+'</span>';}
+  const cls='th '+(got?'got k-'+A.kind:'lock');
+  return '<button class="'+cls+'" style="--fc:'+A.frame+'" data-a="cview" data-id="'+id+'" aria-label="'+(got?'賞状 ':'まだの賞状 ')+esc(A.thumb)+'">'+
+    '<span class="sjl">'+esc(A.thumb)+'</span><span class="sjv">'+(got?'賞<br>状':'？')+'</span>'+sub+'</button>';
+}
+function viewShojo(){
+  const got=AWARD_IDS.filter(id=>store.aw[id]).length;
+  const rows=ORDER.map(k=>'<div class="srow"><div class="sh2" style="--c:'+ZC[k]+'">'+TYPES[k].name+'</div><div class="ths">'+
+    VOLS[k].map((_,v)=>thumb('v:'+k+':'+v)).join('')+'<span class="sep" aria-hidden="true"></span>'+thumb('f:'+k)+'</div></div>').join('')+
+    '<div class="srow"><div class="sh2" style="--c:#fde3a7">称号</div><div class="ths">'+AWARD_IDS.filter(id=>id[0]==='r').map(thumb).join('')+'<span class="sep" aria-hidden="true"></span>'+thumb('all')+'</div></div>';
+  let modal='';
+  if(state.cv){
+    const id=state.cv,A=awardInfo(id),has=!!store.aw[id];
+    if(has){
+      const words=A.kind==='v'&&state.cvWords?'<div class="cwords"><p>この巻で覚えたことば</p><div>'+VOLS[A.k][A.v].map(it=>'<span style="--c:'+ZC[A.k]+'">'+esc(wordLabel(it))+'</span>').join('')+'</div></div>':'';
+      modal='<div class="cer"><div class="cbox">'+(words||'<div class="cwrap"><canvas id="certc" data-id="'+id+'" role="img" aria-label="賞状"></canvas></div>')+
+        '<div class="cbtns">'+(A.kind==='v'?'<button class="sb" data-a="cwords">'+(state.cvWords?'賞状を見る':'覚えたことば')+'</button>':'')+
+        '<button class="sb" data-a="csave">画像で保存</button><button class="sb fill" data-a="cvclose">とじる</button></div></div></div>';
+    }else{
+      let msg,btn='';
+      if(A.kind==='v'){const g=volGot(A.k,A.v),n=VOLS[A.k][A.v].length;msg=TYPES[A.k].name+'　'+volName(A.v)+'<br><b>'+g+' / '+n+'</b> 語　あと'+(n-g)+'語で賞状！';btn='<button class="sb fill" data-a="start" data-t="v:'+A.k+':'+A.v+'">この巻に挑戦する</button>';}
+      else if(A.kind==='f')msg=TYPES[A.k].name+'の巻を<br>ぜんぶクリアすると もらえるよ';
+      else if(A.kind==='r')msg='称号「'+RANKS[A.r][1]+'」になると<br>もらえるよ';
+      else msg='500語 ぜんぶ覚えると<br>もらえる 特別な賞状';
+      modal='<div class="cer"><div class="cbox lockm"><p class="lmsg">'+msg+'</p><div class="cbtns">'+btn+'<button class="sb" data-a="cvclose">とじる</button></div></div></div>';
+    }
+  }
+  return '<div class="qbar"><button class="back" data-a="home">ホームへ</button></div>'+
+    '<header class="hero sm"><h1 class="title">賞状ファイル</h1></header>'+
+    '<section class="stage"><div class="stop"><div class="ztot"><b>'+got+'</b><span> / '+AWARD_IDS.length+' 枚　もらったよ！</span></div>'+
+    '<label class="nkrow">賞状のなまえ <input id="nick2" maxlength="8" value="'+esc(store.nick||'')+'" placeholder="ニックネーム"><button class="sb" data-a="nick2">変える</button></label></div>'+
+    '<p class="shint">各分野の20語ずつが「1巻」。巻の語を全部覚える（図鑑に入る）と賞状がもらえるよ。</p>'+rows+'</section>'+modal;
+}
+const SJ_ICON='<svg class="fz" viewBox="0 0 80 88" aria-hidden="true"><rect x="12" y="6" width="56" height="76" rx="3" fill="#fffdf6" stroke="#c9a24a" stroke-width="4"/><rect x="19" y="13" width="42" height="62" fill="none" stroke="#ffbdbd" stroke-width="4"/><text x="50" y="34" text-anchor="middle" font-size="14" font-weight="900" fill="#4a3438">賞</text><text x="50" y="52" text-anchor="middle" font-size="14" font-weight="900" fill="#4a3438">状</text><path d="M28 30v30M34 30v22" stroke="#d8c7b4" stroke-width="2.5" stroke-linecap="round"/><circle cx="30" cy="66" r="7" fill="none" stroke="#d23a2a" stroke-width="2.5"/></svg>';
 function render(top){
-  app.innerHTML=state.screen==='home'?viewHome():state.screen==='quiz'?viewQuiz():state.screen==='result'?viewResult():state.screen==='zukan'?viewZukan():viewNotebook();
+  app.innerHTML=state.screen==='home'?viewHome():state.screen==='quiz'?viewQuiz():state.screen==='result'?viewResult():state.screen==='zukan'?viewZukan():state.screen==='shojo'?viewShojo():viewNotebook();
+  if(state.cer&&state.cer.length&&state.screen!=='quiz')app.insertAdjacentHTML('beforeend',cerHTML());
+  paintCer();
   if(top){window.scrollTo(0,0);}
   else{const fb=document.getElementById('fb');if(fb)fb.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'});}
 }
@@ -1338,11 +1630,20 @@ document.addEventListener('click',e=>{
   else if(a==='ztab'){state.zTab=b.getAttribute('data-t');state.zOpen=-1;render(false);}
   else if(a==='zopen'){state.zOpen=+b.getAttribute('data-i');render(false);}
   else if(a==='zclose'){state.zOpen=-1;render(false);}
+  else if(a==='shojo'){state.cer=[];state.screen='shojo';state.cv=null;render(true);}
+  else if(a==='cernext'){state.cer.shift();render(false);}
+  else if(a==='cerclose'){state.cer=[];render(false);}
+  else if(a==='nickset'||a==='nick2'){const el=document.getElementById(a==='nickset'?'nick':'nick2');const v=(el&&el.value||'').trim().slice(0,8);if(!v){if(el)el.focus();return;}store.nick=v;save();render(false);}
+  else if(a==='cview'){state.cv=b.getAttribute('data-id');state.cvWords=false;render(false);}
+  else if(a==='cvclose'){state.cv=null;render(false);}
+  else if(a==='cwords'){state.cvWords=!state.cvWords;render(false);}
+  else if(a==='csave'){saveCert(state.cv);}
   else if(a==='reset'){
     if(window.confirm('すべての記録（ポイント・覚えた語・ことば図鑑・復習ノート）を消して、はじめからにします。\nよろしいですか？')){store=blank();save();state.screen='home';state.zOpen=-1;render(true);}
   }
 });
 
+checkAwards();
 render(true);
 })();
 </script>
